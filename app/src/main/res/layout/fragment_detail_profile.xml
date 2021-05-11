@@ -30,7 +30,8 @@
             <ImageView
                 android:id="@+id/ivPlayerImg"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/profilepic" />
 
         </LinearLayout>
 
@@ -91,6 +92,96 @@
             android:textColor="@color/white"/>
         <TextView
             android:id="@+id/tvPlayerState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/tvCommBan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/profile_comm_ban"
+            android:textSize="15dp"
+            android:textColor="@color/white"/>
+        <TextView
+            android:id="@+id/tvPlayerCommBan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/tvVacBan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/profile_vac_ban"
+            android:textSize="15dp"
+            android:textColor="@color/white"/>
+        <TextView
+            android:id="@+id/tvPlayerVacBan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/tvNumVacBan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/profile_num_vac_ban"
+            android:textSize="15dp"
+            android:textColor="@color/white"/>
+        <TextView
+            android:id="@+id/tvPlayerNumVacBan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/tvVacBanDays"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/profile_vac_ban_days"
+            android:textSize="15dp"
+            android:textColor="@color/white"/>
+        <TextView
+            android:id="@+id/tvPlayerVacBanDays"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/tvNumBan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/profile_num_ban"
+            android:textSize="15dp"
+            android:textColor="@color/white"/>
+        <TextView
+            android:id="@+id/tvPlayerNumBan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/tvTradeBan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/profile_trade_ban"
+            android:textSize="15dp"
+            android:textColor="@color/white"/>
+        <TextView
+            android:id="@+id/tvPlayerTradeBan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15dp"

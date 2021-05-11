@@ -37,4 +37,11 @@
     <string name="profile_state">Profile State:</string>
     <string name="visibility_state">Visibility State:</string>
     <string name="friendlist">Friends</string>
+    <string name="profile_comm_ban">Community Banned:</string>
+    <string name="profile_vac_ban">Vac Banned:</string>
+    <string name="profile_num_vac_ban">Number Of VAC Bans</string>
+    <string name="profile_vac_ban_days">Days Since Last Ban:</string>
+    <string name="profile_num_ban">Number Of Game Bans</string>
+    <string name="profile_trade_ban">Trade Ban</string>
+    <string name="profilepic">ProfilePic</string>
 </resources>
