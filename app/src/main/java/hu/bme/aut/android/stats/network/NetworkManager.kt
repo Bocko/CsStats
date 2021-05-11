@@ -1,5 +1,6 @@
 package hu.bme.aut.android.stats.network
 
+import hu.bme.aut.android.stats.model.ban.BanData
 import hu.bme.aut.android.stats.model.friends.FriendlistData
 import hu.bme.aut.android.stats.model.playercount.CountData
 import hu.bme.aut.android.stats.model.profile.ProfileData
@@ -50,7 +51,7 @@ object NetworkManager {
         return STEAM_WEB_API.getFriends(KEY,steamID)
     }
 
-    fun getBans(steamID: Long?): Call<FriendlistData?>?{
+    fun getBans(steamID: Long?): Call<BanData?>?{
         return STEAM_WEB_API.getBans(KEY,steamID)
     }
 

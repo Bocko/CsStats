@@ -1,5 +1,6 @@
 package hu.bme.aut.android.stats.network
 
+import hu.bme.aut.android.stats.model.ban.BanData
 import hu.bme.aut.android.stats.model.friends.FriendlistData
 import hu.bme.aut.android.stats.model.playercount.CountData
 import hu.bme.aut.android.stats.model.profile.ProfileData
@@ -50,5 +51,5 @@ interface SteamWebApi {
     fun getBans(
             @Query("key") key: String?,
             @Query("steamids") steamids: Long?
-    ): Call<FriendlistData?>?
+    ): Call<BanData?>?
 }
