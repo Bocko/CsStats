@@ -45,4 +45,10 @@ interface SteamWebApi {
             @Query("key") key: String?,
             @Query("steamid") steamid: Long?
     ): Call<FriendlistData?>?
+
+    @GET("/ISteamUser/GetPlayerBans/v1/")
+    fun getBans(
+            @Query("key") key: String?,
+            @Query("steamids") steamids: Long?
+    ): Call<FriendlistData?>?
 }

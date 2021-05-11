@@ -50,4 +50,8 @@ object NetworkManager {
         return STEAM_WEB_API.getFriends(KEY,steamID)
     }
 
+    fun getBans(steamID: Long?): Call<FriendlistData?>?{
+        return STEAM_WEB_API.getBans(KEY,steamID)
+    }
+
 }
