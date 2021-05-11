@@ -48,7 +48,6 @@ class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener,
         binding.rvMenu.layoutManager = LinearLayoutManager(this)
         adapter = MenuAdapter(this)
         adapter.addPlayer("bockoofficial")
-        adapter.addPlayer("barnimainaccurlxdd")
         binding.rvMenu.adapter = adapter
     }
 

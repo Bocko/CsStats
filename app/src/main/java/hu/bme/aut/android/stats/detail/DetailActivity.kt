@@ -48,7 +48,7 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder {
         loadFriendlistData()
         loadStatsData()
         loadBanData()
-
+        Thread.sleep(500)
         val detailPagerAdapter = DetailPagerAdapter(this)
         binding.mainViewPager.adapter = detailPagerAdapter
 
@@ -181,8 +181,6 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder {
 
     private fun displayFriendsData(receivedBanData: BanData?) {
         banData = receivedBanData
-        Log.d(TAG,banData?.players?.get(0)?.EconomyBan.toString())
-        Log.d(TAG,banData?.players?.get(0)?.VACBanned.toString())
 
         val detailPagerAdapter = DetailPagerAdapter(this)
         binding.mainViewPager.adapter = detailPagerAdapter
