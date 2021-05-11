@@ -17,6 +17,7 @@ import hu.bme.aut.android.stats.network.NetworkManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.log
 
 class DetailActivity : AppCompatActivity(),PlayerDataHolder {
 
@@ -162,11 +163,12 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder {
 
             override fun onResponse(call: Call<BanData?>,response: Response<BanData?>) {
 
-                Log.d(TAG, "Friends onResponse: " + response.code())
+                Log.d(TAG, "Ban onResponse: " + response.code())
                 if (response.isSuccessful) {
                     displayFriendsData(response.body())
+
                 } else {
-                    Toast.makeText(this@DetailActivity,"Private Friends" + response.message(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@DetailActivity,"Private Profile" + response.message(),Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -179,6 +181,8 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder {
 
     private fun displayFriendsData(receivedBanData: BanData?) {
         banData = receivedBanData
+        Log.d(TAG,banData?.players?.get(0)?.EconomyBan.toString())
+        Log.d(TAG,banData?.players?.get(0)?.VACBanned.toString())
 
         val detailPagerAdapter = DetailPagerAdapter(this)
         binding.mainViewPager.adapter = detailPagerAdapter

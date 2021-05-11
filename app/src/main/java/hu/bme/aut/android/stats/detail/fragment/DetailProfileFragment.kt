@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import hu.bme.aut.android.stats.R
 import hu.bme.aut.android.stats.databinding.FragmentDetailProfileBinding
 import hu.bme.aut.android.stats.detail.PlayerDataHolder
 import hu.bme.aut.android.stats.model.profile.Player
@@ -50,17 +51,14 @@ class DetailProfileFragment: Fragment() {
     }
 
     private fun displayProfileData() {
-        if(playerDataHolder?.getProfileData()?.response == null)
-        {
-            Log.d("ProfilePage: ","asdasd")
-        }
-
         val profile = playerDataHolder?.getProfileData()?.response?.players?.get(0)
+
         binding.tvPlayerName.text = profile?.personaname
         binding.tvPlayerID.text = profile?.steamid.toString()
         binding.tvPlayerProfileLink.text = profile?.profileurl
         setVis(profile)
         setState(profile)
+        setBans()
         Glide.with(this)
             .load(profile?.avatarfull)
             .transition(DrawableTransitionOptions().crossFade())
@@ -77,7 +75,7 @@ class DetailProfileFragment: Fragment() {
                 4 -> "Snooze"
                 else -> ""
             }
-            var color: Int = when(profile?.personastate){
+            val color: Int = when(profile?.personastate){
                 0 -> Color.LTGRAY
                 else -> Color.rgb(87,203,222)
             }
@@ -98,11 +96,36 @@ class DetailProfileFragment: Fragment() {
             3 -> "Public"
             else -> ""
         }
-        var color: Int = when(profile?.communityvisibilitystate){
+        val color: Int = when(profile?.communityvisibilitystate){
             1 -> Color.RED
             else -> Color.GREEN
         }
         binding.tvPlayerCommProfileState.setTextColor(color)
+    }
+
+    private fun setBans(){
+
+        val bans = playerDataHolder?.getBanData()?.players?.get(0)
+        if (bans?.CommunityBanned!!){
+            binding.tvPlayerCommBan.text = getString(R.string.banned)
+            binding.tvPlayerCommBan.setTextColor(Color.RED)
+        }else{
+            binding.tvPlayerCommBan.text = getString(R.string.bannedNone)
+            binding.tvPlayerCommBan.setTextColor(Color.GREEN)
+        }
+        if(bans.VACBanned!!){
+            binding.tvPlayerVacBan.text = getString(R.string.banned)
+            binding.tvPlayerVacBan.setTextColor(Color.RED)
+        }else{
+            binding.tvPlayerVacBan.text = getString(R.string.bannedNone)
+            binding.tvPlayerVacBan.setTextColor(Color.GREEN)
+        }
+
+        binding.tvPlayerNumVacBan.text = bans.NumberOfVACBans.toString()
+        binding.tvPlayerVacBanDays.text = bans.DaysSinceLastBan.toString()
+        binding.tvPlayerNumBan.text = bans.NumberOfGameBans.toString()
+        binding.tvPlayerTradeBan.text = bans.EconomyBan?.capitalize()
+
     }
 
 }
