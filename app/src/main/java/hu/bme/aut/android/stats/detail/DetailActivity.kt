@@ -9,6 +9,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import hu.bme.aut.android.stats.R
 import hu.bme.aut.android.stats.databinding.ActivityDetailBinding
 import hu.bme.aut.android.stats.detail.adapter.DetailPagerAdapter
+import hu.bme.aut.android.stats.model.ban.BanData
 import hu.bme.aut.android.stats.model.friends.FriendlistData
 import hu.bme.aut.android.stats.model.profile.ProfileData
 import hu.bme.aut.android.stats.model.stats.PlayerStatsData
@@ -30,6 +31,7 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder {
     private var profileData: ProfileData? = null
     private var statsData: PlayerStatsData? = null
     private var friendlistData: FriendlistData? = null
+    private var banData: BanData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +46,7 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder {
         loadProfileData()
         loadFriendlistData()
         loadStatsData()
+        loadBanData()
 
         val detailPagerAdapter = DetailPagerAdapter(this)
         binding.mainViewPager.adapter = detailPagerAdapter
@@ -71,6 +74,7 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder {
     override fun getProfileData(): ProfileData? = profileData
     override fun getStatsData(): PlayerStatsData? = statsData
     override fun getFriendlistData(): FriendlistData? = friendlistData
+    override fun getBanData(): BanData? = banData
 
     private fun loadStatsData(){
         NetworkManager.getStats(playerID)!!.enqueue(object : Callback<PlayerStatsData?> {
@@ -148,6 +152,33 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder {
 
     private fun displayFriendsData(receivedFriendData: FriendlistData?) {
         friendlistData = receivedFriendData
+
+        val detailPagerAdapter = DetailPagerAdapter(this)
+        binding.mainViewPager.adapter = detailPagerAdapter
+    }
+
+    private fun loadBanData(){
+        NetworkManager.getBans(playerID)!!.enqueue(object : Callback<BanData?> {
+
+            override fun onResponse(call: Call<BanData?>,response: Response<BanData?>) {
+
+                Log.d(TAG, "Friends onResponse: " + response.code())
+                if (response.isSuccessful) {
+                    displayFriendsData(response.body())
+                } else {
+                    Toast.makeText(this@DetailActivity,"Private Friends" + response.message(),Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<BanData?>,throwable: Throwable) {
+                throwable.printStackTrace()
+                Toast.makeText(this@DetailActivity,"Network request error occurred, check LOG",Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun displayFriendsData(receivedBanData: BanData?) {
+        banData = receivedBanData
 
         val detailPagerAdapter = DetailPagerAdapter(this)
         binding.mainViewPager.adapter = detailPagerAdapter
