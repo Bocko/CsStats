@@ -11,9 +11,11 @@ import hu.bme.aut.android.stats.databinding.ActivityDetailBinding
 import hu.bme.aut.android.stats.detail.adapter.DetailPagerAdapter
 import hu.bme.aut.android.stats.model.ban.BanData
 import hu.bme.aut.android.stats.model.friends.FriendlistData
+import hu.bme.aut.android.stats.model.inventory.InventoryData
 import hu.bme.aut.android.stats.model.profile.ProfileData
 import hu.bme.aut.android.stats.model.stats.PlayerStatsData
 import hu.bme.aut.android.stats.network.NetworkManager
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -44,11 +46,14 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder {
 
     override fun onResume() {
         super.onResume()
-        loadProfileData()
-        loadFriendlistData()
-        loadStatsData()
-        loadBanData()
-        Thread.sleep(500)
+
+        runBlocking {
+            loadProfileData()
+            loadFriendlistData()
+            loadStatsData()
+            loadBanData()
+            loadInvData() }
+
         val detailPagerAdapter = DetailPagerAdapter(this)
         binding.mainViewPager.adapter = detailPagerAdapter
 
@@ -165,7 +170,7 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder {
 
                 Log.d(TAG, "Ban onResponse: " + response.code())
                 if (response.isSuccessful) {
-                    displayFriendsData(response.body())
+                    displayBanData(response.body())
 
                 } else {
                     Toast.makeText(this@DetailActivity,"Private Profile" + response.message(),Toast.LENGTH_SHORT).show()
@@ -179,8 +184,36 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder {
         })
     }
 
-    private fun displayFriendsData(receivedBanData: BanData?) {
+    private fun displayBanData(receivedBanData: BanData?) {
         banData = receivedBanData
+
+        val detailPagerAdapter = DetailPagerAdapter(this)
+        binding.mainViewPager.adapter = detailPagerAdapter
+    }
+
+    private fun loadInvData(){
+        NetworkManager.getInventory(playerID)!!.enqueue(object : Callback<InventoryData?> {
+
+            override fun onResponse(call: Call<InventoryData?>,response: Response<InventoryData?>) {
+
+                Log.d(TAG, "Inv onResponse: " + response.code())
+                if (response.isSuccessful) {
+                    displayInvData(response.body())
+
+                } else {
+                    Toast.makeText(this@DetailActivity,"Private Profile" + response.message(),Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<InventoryData?>,throwable: Throwable) {
+                throwable.printStackTrace()
+                Toast.makeText(this@DetailActivity,"Network request error occurred, check LOG",Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun displayInvData(receivedInvData: InventoryData?) {
+        var asd: InventoryData? = receivedInvData
 
         val detailPagerAdapter = DetailPagerAdapter(this)
         binding.mainViewPager.adapter = detailPagerAdapter

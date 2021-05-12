@@ -2,6 +2,7 @@ package hu.bme.aut.android.stats.network
 
 import hu.bme.aut.android.stats.model.ban.BanData
 import hu.bme.aut.android.stats.model.friends.FriendlistData
+import hu.bme.aut.android.stats.model.inventory.InventoryData
 import hu.bme.aut.android.stats.model.playercount.CountData
 import hu.bme.aut.android.stats.model.profile.ProfileData
 import hu.bme.aut.android.stats.model.stats.PlayerStatsData
@@ -13,9 +14,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkManager {
     private val retrofit: Retrofit
+    private val retrofitInv: Retrofit
     private val STEAM_WEB_API: SteamWebApi
+    private val inventoryApi: InventoryApi
 
     private const val SERVICE_URL = "https://api.steampowered.com"
+    private const val INVENTORY_URL = "https://steamcommunity.com"
     private const val KEY = "686EAC68C74B3321C6FB3FF28F0B994D"
 
     init {
@@ -25,6 +29,13 @@ object NetworkManager {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         STEAM_WEB_API = retrofit.create(SteamWebApi::class.java)
+
+        retrofitInv = Retrofit.Builder()
+                .baseUrl(INVENTORY_URL)
+                .client(OkHttpClient.Builder().build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        inventoryApi = retrofitInv.create(InventoryApi::class.java)
     }
 
     fun getStats(steamID: Long?): Call<PlayerStatsData?>? {
@@ -53,6 +64,10 @@ object NetworkManager {
 
     fun getBans(steamID: Long?): Call<BanData?>?{
         return STEAM_WEB_API.getBans(KEY,steamID)
+    }
+
+    fun getInventory(steamID: Long?): Call<InventoryData?>?{
+        return inventoryApi.getInventory(steamID)
     }
 
 }
