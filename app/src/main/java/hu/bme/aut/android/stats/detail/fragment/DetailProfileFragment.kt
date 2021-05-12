@@ -45,7 +45,7 @@ class DetailProfileFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (playerDataHolder!!.getProfileData() != null) {
+        if (playerDataHolder!!.getBanData() != null) {
             displayProfileData()
         }
     }

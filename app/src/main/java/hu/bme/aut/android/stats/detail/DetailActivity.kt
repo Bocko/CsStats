@@ -15,15 +15,22 @@ import hu.bme.aut.android.stats.model.inventory.InventoryData
 import hu.bme.aut.android.stats.model.profile.ProfileData
 import hu.bme.aut.android.stats.model.stats.PlayerStatsData
 import hu.bme.aut.android.stats.network.NetworkManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.CoroutineContext
 import kotlin.math.log
 
-class DetailActivity : AppCompatActivity(),PlayerDataHolder {
+class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
 
     lateinit var binding: ActivityDetailBinding
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
 
     companion object {
         private const val TAG = "DetailsActivity"
@@ -35,6 +42,7 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder {
     private var statsData: PlayerStatsData? = null
     private var friendlistData: FriendlistData? = null
     private var banData: BanData? = null
+    private var inventoryData: InventoryData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,8 +60,8 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder {
             loadFriendlistData()
             loadStatsData()
             loadBanData()
-            loadInvData() }
-
+            loadInvData()
+        }
         val detailPagerAdapter = DetailPagerAdapter(this)
         binding.mainViewPager.adapter = detailPagerAdapter
 
@@ -63,10 +71,10 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder {
                 1 -> getString(R.string.friendlist)
                 2 -> getString(R.string.stat)
                 3 -> getString(R.string.chart)
+                4 -> getString(R.string.inventory)
                 else -> ""
             }
         }.attach()
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -81,8 +89,9 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder {
     override fun getStatsData(): PlayerStatsData? = statsData
     override fun getFriendlistData(): FriendlistData? = friendlistData
     override fun getBanData(): BanData? = banData
+    override fun getInventory(): InventoryData? = inventoryData
 
-    private fun loadStatsData(){
+    private fun loadStatsData() = launch{
         NetworkManager.getStats(playerID)!!.enqueue(object : Callback<PlayerStatsData?> {
 
             override fun onResponse(call: Call<PlayerStatsData?>,response: Response<PlayerStatsData?>) {
@@ -110,7 +119,7 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder {
         binding.mainViewPager.adapter = detailPagerAdapter
     }
 
-    private fun loadProfileData(){
+    private fun loadProfileData() = launch{
         NetworkManager.getProfile(playerID)!!.enqueue(object : Callback<ProfileData?> {
 
             override fun onResponse( call: Call<ProfileData?>, response: Response<ProfileData?>) {
@@ -136,7 +145,7 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder {
         binding.mainViewPager.adapter = detailPagerAdapter
     }
 
-    private fun loadFriendlistData(){
+    private fun loadFriendlistData() = launch{
         NetworkManager.getFriends(playerID)!!.enqueue(object : Callback<FriendlistData?> {
 
             override fun onResponse(call: Call<FriendlistData?>,response: Response<FriendlistData?>) {
@@ -163,7 +172,7 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder {
         binding.mainViewPager.adapter = detailPagerAdapter
     }
 
-    private fun loadBanData(){
+    private fun loadBanData() = launch{
         NetworkManager.getBans(playerID)!!.enqueue(object : Callback<BanData?> {
 
             override fun onResponse(call: Call<BanData?>,response: Response<BanData?>) {
@@ -191,7 +200,7 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder {
         binding.mainViewPager.adapter = detailPagerAdapter
     }
 
-    private fun loadInvData(){
+    private fun loadInvData() = launch{
         NetworkManager.getInventory(playerID)!!.enqueue(object : Callback<InventoryData?> {
 
             override fun onResponse(call: Call<InventoryData?>,response: Response<InventoryData?>) {
@@ -213,7 +222,7 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder {
     }
 
     private fun displayInvData(receivedInvData: InventoryData?) {
-        var asd: InventoryData? = receivedInvData
+        inventoryData = receivedInvData
 
         val detailPagerAdapter = DetailPagerAdapter(this)
         binding.mainViewPager.adapter = detailPagerAdapter

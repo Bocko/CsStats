@@ -46,4 +46,7 @@
     <string name="profilepic">ProfilePic</string>
     <string name="banned">Banned</string>
     <string name="bannedNone">None</string>
+    <string name="inventory">Inventory</string>
+    <string name="itemName">Inventory Item Name</string>
+    <string name="itemAmount">Amount:</string>
 </resources>
