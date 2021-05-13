@@ -38,15 +38,22 @@ class InventoryAdapter : RecyclerView.Adapter<InventoryAdapter.InventoryViewHold
 
     override fun getItemCount(): Int = invenotry.size
 
-    fun addItems(ID: InventoryData) {
+    fun addItems(ID: MutableList<InventoryFullItem?>) {
+
+        invenotry = ID
+        notifyDataSetChanged()
+
+
+        /*
         ID.rgInventory?.forEach {
+
             val decs = "${it.value.classid}_${it.value.instanceid}"
             val item = InventoryFullItem()
             item.amount = it.value.amount
             item.decs = ID.rgDescriptions?.get(decs)
             invenotry.add(item)
             notifyItemInserted(invenotry.size - 1)
-        }
+        }*/
     }
 
     inner class InventoryViewHolder(val binding: ItemInventoryBinding): RecyclerView.ViewHolder(binding.root) {

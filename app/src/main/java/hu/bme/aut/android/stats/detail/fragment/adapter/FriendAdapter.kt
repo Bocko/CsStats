@@ -83,11 +83,9 @@ class FriendAdapter (private val listener: OnPlayerSelectedListener) : RecyclerV
         })
     }
 
-    private fun displayProfileData(receivedProfileData: ProfileData?) {
-        receivedProfileData?.response?.players?.forEach {
-            friends.add(it)
-            notifyItemInserted(friends.size - 1)
-        }
+    private fun displayProfileData(receivedFriendsData: ProfileData?) {
+        friends = receivedFriendsData?.response?.players!!.toMutableList()
+        notifyDataSetChanged()
     }
 
 }

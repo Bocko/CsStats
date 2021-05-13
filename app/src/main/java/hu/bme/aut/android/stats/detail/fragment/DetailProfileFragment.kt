@@ -106,7 +106,6 @@ class DetailProfileFragment: Fragment() {
     private fun setBans(){
 
         val bans = playerDataHolder?.getBanData()?.players?.get(0)
-        Log.d("asd", bans?.CommunityBanned.toString())
         if (bans?.CommunityBanned!!){
             binding.tvPlayerCommBan.text = getString(R.string.banned)
             binding.tvPlayerCommBan.setTextColor(Color.RED)
@@ -121,7 +120,6 @@ class DetailProfileFragment: Fragment() {
             binding.tvPlayerVacBan.text = getString(R.string.bannedNone)
             binding.tvPlayerVacBan.setTextColor(Color.GREEN)
         }
-        Log.d("asd", bans?.CommunityBanned.toString())
         if(bans.EconomyBan.equals("banned")){
             binding.tvPlayerTradeBan.text = getString(R.string.banned)
             binding.tvPlayerTradeBan.setTextColor(Color.RED)

@@ -14,6 +14,7 @@ import hu.bme.aut.android.stats.detail.PlayerDataHolder
 import hu.bme.aut.android.stats.detail.fragment.adapter.FriendAdapter
 import hu.bme.aut.android.stats.detail.fragment.adapter.InventoryAdapter
 import hu.bme.aut.android.stats.menu.adapter.MenuAdapter
+import hu.bme.aut.android.stats.model.inventory.InventoryFullItem
 
 class DetailInventoryFragment : Fragment(){
 
@@ -44,7 +45,38 @@ class DetailInventoryFragment : Fragment(){
     private fun initRecyclerView() {
         binding.rvInventory.layoutManager = LinearLayoutManager(binding.rvInventory.context)
         adapter = InventoryAdapter()
-        adapter.addItems(playerDataHolder?.getInventory()!!)
+        //adapter.addItems(playerDataHolder?.getInventory()!!)
+        setupInventory()
         binding.rvInventory.adapter = adapter
+    }
+
+    private fun setupInventory(){
+        val inv = playerDataHolder?.getInventory()!!
+        val itemList: MutableList<InventoryFullItem?> = ArrayList()
+        var inIt = false
+
+        for(entry in inv.rgInventory!!) {
+            val decs = "${entry.value.classid}_${entry.value.instanceid}"
+            val item = InventoryFullItem()
+            item.amount = entry.value.amount
+            item.decs = inv.rgDescriptions?.get(decs)
+            if(itemList.size == 0){
+                itemList.add(item)
+            }else{
+                for (it in itemList){
+                    if(it?.decs?.market_name.equals(item.decs?.market_name)){
+                        it?.amount = it?.amount?.toInt()?.plus(1).toString()
+                        inIt = false
+                        break
+                    }else{
+                        inIt = true
+                    }
+                }
+                if (inIt){
+                    itemList.add(item)
+                }
+            }
+        }
+        adapter.addItems(itemList)
     }
 }
