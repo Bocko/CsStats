@@ -45,7 +45,9 @@ class DetailInventoryFragment : Fragment(){
     private fun initRecyclerView() {
         binding.rvInventory.layoutManager = LinearLayoutManager(binding.rvInventory.context)
         adapter = InventoryAdapter()
-        setupInventory()
+        if(playerDataHolder?.getInventory()?.rgInventory != null) {
+            setupInventory()
+        }
         binding.rvInventory.adapter = adapter
     }
 
