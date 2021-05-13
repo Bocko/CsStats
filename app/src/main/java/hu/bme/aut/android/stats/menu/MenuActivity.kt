@@ -9,22 +9,26 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import hu.bme.aut.android.stats.databinding.ActivityMenuBinding
 import hu.bme.aut.android.stats.detail.DetailActivity
+import hu.bme.aut.android.stats.detail.fragment.adapter.FriendAdapter
 import hu.bme.aut.android.stats.menu.adapter.MenuAdapter
 import hu.bme.aut.android.stats.menu.fragment.AddPlayerDialogFragment
 import hu.bme.aut.android.stats.model.playercount.CountData
 import hu.bme.aut.android.stats.network.NetworkManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.CoroutineContext
 
-class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener,
-        AddPlayerDialogFragment.AddPlayerDialogListener{
+class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener, AddPlayerDialogFragment.AddPlayerDialogListener , CoroutineScope{
 
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
 
     lateinit var binding: ActivityMenuBinding
     lateinit var adapter: MenuAdapter
-
-
 
     private var countData: CountData? = null
 
@@ -36,6 +40,16 @@ class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener,
         loadPlayerCountData()
         initFab()
         initRecyclerView()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?){
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == 1) {
+            launch {
+                val player = data?.getStringExtra("player")
+                adapter.addPlayer(player!!)
+            }
+        }
     }
 
     private fun initFab() {
@@ -56,7 +70,7 @@ class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener,
         val showDetailIntent = Intent()
         showDetailIntent.setClass(this@MenuActivity, DetailActivity::class.java)
         showDetailIntent.putExtra(DetailActivity.PLAYER_NAME, player.toString())
-        startActivity(showDetailIntent)
+        startActivityForResult(showDetailIntent,1)
     }
 
     override fun onPlayerDeleted(position: Int) {
@@ -67,7 +81,7 @@ class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener,
         adapter.addPlayer(idOrUrl)
     }
 
-    private  fun loadPlayerCountData(){
+    private fun loadPlayerCountData(){
 
         NetworkManager.getPlayerCount()!!.enqueue(object : Callback<CountData?> {
 

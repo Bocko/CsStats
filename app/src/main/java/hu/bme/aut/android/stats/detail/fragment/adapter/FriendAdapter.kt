@@ -18,7 +18,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
 
-class FriendAdapter (private val listener: OnPlayerSelectedListener) : RecyclerView.Adapter<FriendAdapter.FriendViewHolder>() {
+class FriendAdapter (private val listener: OnFriendSelectedListener) : RecyclerView.Adapter<FriendAdapter.FriendViewHolder>() {
 
     private val TAG = "FriendActivity"
     private var friends: MutableList<Player?> = ArrayList()
@@ -43,12 +43,12 @@ class FriendAdapter (private val listener: OnPlayerSelectedListener) : RecyclerV
     inner class FriendViewHolder(val binding: ItemFriendBinding) :
             RecyclerView.ViewHolder(binding.root) {
         var item: Player? = null
-        /*
+
         init {
-            binding.root.setOnClickListener {
-                listener.onPlayerSelected(item?.steamid)
+            binding.ibAdd.setOnClickListener {
+                listener.onFriendSelected(item?.steamid)
             }
-        }*/
+        }
 
         fun bind(newFriend: Player?) {
             item = newFriend!!
@@ -60,8 +60,8 @@ class FriendAdapter (private val listener: OnPlayerSelectedListener) : RecyclerV
         }
     }
 
-    interface OnPlayerSelectedListener {
-        fun onPlayerSelected(player: Long?)
+    interface OnFriendSelectedListener {
+        fun onFriendSelected(friend: Long?)
     }
 
     private fun loadFriendsProfilesData(playerIDorURL: String?){

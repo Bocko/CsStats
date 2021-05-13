@@ -1,5 +1,6 @@
 package hu.bme.aut.android.stats.detail.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,7 +14,7 @@ import hu.bme.aut.android.stats.detail.PlayerDataHolder
 import hu.bme.aut.android.stats.detail.fragment.adapter.FriendAdapter
 import hu.bme.aut.android.stats.menu.adapter.MenuAdapter
 
-class DetailFriendlistFragment : Fragment(),FriendAdapter.OnPlayerSelectedListener {
+class DetailFriendlistFragment : Fragment(),FriendAdapter.OnFriendSelectedListener {
 
     private var _binding: FragmentDetailFriendlistBinding? = null
     private val binding get() = _binding!!
@@ -50,7 +51,11 @@ class DetailFriendlistFragment : Fragment(),FriendAdapter.OnPlayerSelectedListen
         binding.rvFriends.adapter = adapter
     }
 
-    override fun onPlayerSelected(player: Long?) {
-        TODO("Not yet implemented")
+    override fun onFriendSelected(friend: Long?) {
+        Log.d("FriendClicked:",friend.toString())
+        val id = Intent()
+        id.putExtra("player",friend.toString())
+        activity?.setResult(1,id)
+        activity?.finish()
     }
 }

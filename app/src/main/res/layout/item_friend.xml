@@ -22,7 +22,8 @@
         <ImageView
             android:id="@+id/ivFriendImg"
             android:layout_width="50dp"
-            android:layout_height="50dp"/>
+            android:layout_height="50dp"
+            android:contentDescription="@string/friendpic" />
 
         <TextView
             android:id="@+id/tvFriendName"
@@ -35,6 +36,16 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_gravity="center"/>
+
+        <ImageButton
+            android:id="@+id/ibAdd"
+            android:layout_width="25dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_baseline_add_24"
+            android:contentDescription="@string/deletebutton" />
 
     </LinearLayout>
 </LinearLayout>

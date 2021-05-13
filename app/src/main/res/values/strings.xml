@@ -49,4 +49,6 @@
     <string name="inventory">Inventory</string>
     <string name="itemName">Inventory Item Name</string>
     <string name="itemAmount">Amount:</string>
+    <string name="friendpic">FriendPic</string>
+    <string name="deletebutton">DeleteButton</string>
 </resources>

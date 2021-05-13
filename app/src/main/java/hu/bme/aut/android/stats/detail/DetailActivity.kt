@@ -1,5 +1,6 @@
 package hu.bme.aut.android.stats.detail
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import hu.bme.aut.android.stats.R
 import hu.bme.aut.android.stats.databinding.ActivityDetailBinding
 import hu.bme.aut.android.stats.detail.adapter.DetailPagerAdapter
+import hu.bme.aut.android.stats.detail.fragment.adapter.FriendAdapter
 import hu.bme.aut.android.stats.model.ban.BanData
 import hu.bme.aut.android.stats.model.friends.FriendlistData
 import hu.bme.aut.android.stats.model.inventory.InventoryData
@@ -84,6 +86,8 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
         }
         return super.onOptionsItemSelected(item)
     }
+
+
 
     override fun getProfileData(): ProfileData? = profileData
     override fun getStatsData(): PlayerStatsData? = statsData
