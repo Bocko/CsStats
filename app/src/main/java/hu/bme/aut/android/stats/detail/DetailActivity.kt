@@ -62,7 +62,7 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
             loadFriendlistData()
             loadStatsData()
             loadBanData()
-            loadInvData()
+            //loadInvData()
         }
         val detailPagerAdapter = DetailPagerAdapter(this)
         binding.mainViewPager.adapter = detailPagerAdapter
@@ -204,31 +204,4 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
         binding.mainViewPager.adapter = detailPagerAdapter
     }
 
-    private fun loadInvData() = launch{
-        NetworkManager.getInventory(playerID)!!.enqueue(object : Callback<InventoryData?> {
-
-            override fun onResponse(call: Call<InventoryData?>,response: Response<InventoryData?>) {
-
-                Log.d(TAG, "Inv onResponse: " + response.code() + " - " + response.message())
-                if (response.isSuccessful) {
-                    displayInvData(response.body())
-
-                } else {
-                    Toast.makeText(this@DetailActivity,"(Inv)Private Profile" + response.message(),Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<InventoryData?>,throwable: Throwable) {
-                throwable.printStackTrace()
-                Toast.makeText(this@DetailActivity,"Network request error occurred, check LOG",Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-    private fun displayInvData(receivedInvData: InventoryData?) {
-        inventoryData = receivedInvData
-
-        val detailPagerAdapter = DetailPagerAdapter(this)
-        binding.mainViewPager.adapter = detailPagerAdapter
-    }
 }

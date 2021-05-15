@@ -1,15 +1,19 @@
 package hu.bme.aut.android.stats.detail.fragment.adapter
 
+import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import hu.bme.aut.android.stats.databinding.ItemFriendBinding
 import hu.bme.aut.android.stats.databinding.ItemInventoryBinding
 import hu.bme.aut.android.stats.databinding.ItemPlayerBinding
+import hu.bme.aut.android.stats.detail.DetailActivity
+import hu.bme.aut.android.stats.detail.adapter.DetailPagerAdapter
 import hu.bme.aut.android.stats.menu.adapter.MenuAdapter
 import hu.bme.aut.android.stats.model.inventory.InventoryData
 import hu.bme.aut.android.stats.model.inventory.InventoryFullItem
@@ -17,12 +21,21 @@ import hu.bme.aut.android.stats.model.profile.Player
 import hu.bme.aut.android.stats.model.profile.ProfileData
 import hu.bme.aut.android.stats.model.url.UrlData
 import hu.bme.aut.android.stats.network.NetworkManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
+import kotlin.coroutines.CoroutineContext
 
-class InventoryAdapter : RecyclerView.Adapter<InventoryAdapter.InventoryViewHolder>() {
+class InventoryAdapter : RecyclerView.Adapter<InventoryAdapter.InventoryViewHolder>(), CoroutineScope {
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
+
+    private val TAG = "InventoryActivity"
 
     private var invenotry: MutableList<InventoryFullItem?> = ArrayList()
     private val imgURL = "https://steamcommunity-a.akamaihd.net/economy/image/"
@@ -38,9 +51,8 @@ class InventoryAdapter : RecyclerView.Adapter<InventoryAdapter.InventoryViewHold
 
     override fun getItemCount(): Int = invenotry.size
 
-    fun addItems(ID: MutableList<InventoryFullItem?>) {
-        invenotry = ID
-        notifyDataSetChanged()
+    fun addItems(steamID: Long,ctx:Context) {
+        loadInvData(steamID,ctx)
     }
 
     inner class InventoryViewHolder(val binding: ItemInventoryBinding): RecyclerView.ViewHolder(binding.root) {
@@ -60,5 +72,104 @@ class InventoryAdapter : RecyclerView.Adapter<InventoryAdapter.InventoryViewHold
                     .transition(DrawableTransitionOptions().crossFade())
                     .into(binding.ivItemImg)
         }
+    }
+
+    private fun loadInvData(playerID: Long,ctx: Context) = launch{
+        NetworkManager.getInventory(playerID)!!.enqueue(object : Callback<InventoryData?> {
+
+            override fun onResponse(call: Call<InventoryData?>,response: Response<InventoryData?>) {
+
+                Log.d(TAG,"Inv onResponse: " + response.code() + " - " + response.message())
+                if (response.isSuccessful) {
+                    displayInvData(response.body())
+                } else {
+                    Toast.makeText(ctx,"(Inv)Private Profile" + response.message(), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<InventoryData?>,throwable: Throwable) {
+                throwable.printStackTrace()
+                Toast.makeText(ctx,"Network request error occurred, check LOG", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun displayInvData(receivedInvData: InventoryData?) {
+        if(receivedInvData?.rgInventory != null){
+            setupInventory(receivedInvData)
+        }
+    }
+
+    private fun setupInventory(inventoryData: InventoryData){
+        val inv = inventoryData
+        var itemList: MutableList<InventoryFullItem?> = ArrayList()
+        var inIt = false
+
+        for(entry in inv.rgInventory!!) {
+            val decs = "${entry.value.classid}_${entry.value.instanceid}"
+            val item = InventoryFullItem()
+            item.amount = entry.value.amount
+            item.decs = inv.rgDescriptions?.get(decs)
+            if(itemList.size == 0){
+                itemList.add(item)
+            }else{
+                for (it in itemList){
+                    if(it?.decs?.market_name.equals(item.decs?.market_name)){
+                        it?.amount = it?.amount?.toInt()?.plus(1).toString()
+                        inIt = false
+                        break
+                    }else{
+                        inIt = true
+                    }
+                }
+                if (inIt){
+                    itemList.add(item)
+                }
+            }
+        }
+        invenotry = sortInventory(itemList)
+        notifyDataSetChanged()
+    }
+
+    private fun sortInventory(itemList: MutableList<InventoryFullItem?>): MutableList<InventoryFullItem?> {
+
+        for (i in 0 until itemList.size-1){
+            var min:Int = i
+            for (j in i+1 until itemList.size){
+                var color = ""
+                var colorMin = ""
+                itemList[j]?.decs?.tags?.forEach {
+                    if (!it.color.isNullOrEmpty()){
+                        color = it.color!!
+                    }
+                }
+                itemList[min]?.decs?.tags?.forEach {
+                    if (!it.color.isNullOrEmpty()){
+                        colorMin = it.color!!
+                    }
+                }
+                if (colorToInt(color) > colorToInt(colorMin)){
+                    min = j
+                }
+            }
+            if(min != i){
+                itemList[i] = itemList[min].also { itemList[min] = itemList[i] }
+            }
+        }
+
+        return itemList
+    }
+
+    private fun colorToInt(color:String): Int{
+        when(color){
+            "b0c3d9" -> return 1
+            "5e98d9" -> return 2
+            "4b69ff" -> return 3
+            "8847ff" -> return 4
+            "d32ce6" -> return 5
+            "eb4b4b" -> return 6
+            "e4ae39" -> return 7
+        }
+        return 0
     }
 }

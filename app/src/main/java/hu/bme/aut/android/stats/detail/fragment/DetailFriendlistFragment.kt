@@ -52,7 +52,6 @@ class DetailFriendlistFragment : Fragment(),FriendAdapter.OnFriendSelectedListen
     }
 
     override fun onFriendSelected(friend: Long?) {
-        Log.d("FriendClicked:",friend.toString())
         val id = Intent()
         id.putExtra("player",friend.toString())
         activity?.setResult(1,id)
