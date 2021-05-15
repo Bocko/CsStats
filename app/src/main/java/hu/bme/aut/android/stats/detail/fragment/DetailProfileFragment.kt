@@ -93,7 +93,7 @@ class DetailProfileFragment: Fragment() {
 
         binding.tvPlayerCommProfileState.text = when(profile?.communityvisibilitystate){
             1 -> "Private"
-            3 -> "Public"
+            3 -> "Public / Friends Only"
             else -> ""
         }
         val color: Int = when(profile?.communityvisibilitystate){
