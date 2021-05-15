@@ -2,8 +2,11 @@ package hu.bme.aut.android.stats.menu.fragment
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
 import hu.bme.aut.android.stats.R
@@ -31,14 +34,17 @@ class AddPlayerDialogFragment: AppCompatDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DialogNewPlayerBinding.inflate(LayoutInflater.from(context))
-        return AlertDialog.Builder(requireContext())
+        var alert = AlertDialog.Builder(requireContext())
                 .setTitle(R.string.new_player)
                 .setView(binding.root)
-                .setPositiveButton(R.string.ok) { dialogInterface, _ ->
+                .setPositiveButton(R.string.ok) { _, _ ->
                     listener.onPlayerAdded(binding.newPlayerDialogEditText.text.toString())
                 }
                 .setNegativeButton(R.string.cancel, null)
                 .create()
+
+        alert.window?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.lightgray)))
+        return alert
     }
 
     interface AddPlayerDialogListener{

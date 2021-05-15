@@ -55,7 +55,8 @@ class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener, 
 
     private fun initFab() {
         binding.fab.setOnClickListener{
-            AddPlayerDialogFragment().show(supportFragmentManager, AddPlayerDialogFragment::class.java.simpleName)
+            var addplayer = AddPlayerDialogFragment()
+            addplayer.show(supportFragmentManager, AddPlayerDialogFragment::class.java.simpleName)
         }
     }
 

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="24dp"
+    android:padding="15dp"
     android:background="@color/lightgray">
 
     <TextView
@@ -11,13 +11,18 @@
         android:layout_height="wrap_content"
         android:text="@string/newPlayerText"
         android:textSize="20sp"
-        />
+        android:layout_marginBottom="10dp"/>
+
     <EditText
         android:id="@+id/newPlayerDialogEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
+        android:textColorHint="@color/middlegray"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/white"
         android:autofillHints="steamid"
+        android:textSize="20sp"
         android:hint="@string/steamid_url"/>
 
 </LinearLayout>

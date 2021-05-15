@@ -3,7 +3,7 @@
     <string name="newPlayerText">SteamID or the end of Custom URL</string>
     <string name="remove">Delete</string>
     <string name="playerName">Bocko</string>
-    <string name="new_player">New player</string>
+    <string name="new_player">Add A New Player</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="profile">Profile</string>
@@ -50,7 +50,7 @@
     <string name="player_statistics">PLAYER STATISTICS</string>
     <string name="map_statistics">MAP STATISTICS</string>
     <string name="itempic">ItemPic</string>
-    <string name="steamid_url">SteamID/URL</string>
+    <string name="steamid_url">7656XXXXXXXXXXXXX/URL</string>
     <string name="playerpic">playerpic</string>
     <string name="rounds_played">Rounds Played:</string>
     <string name="rounds_won">Rounds Won:</string>
