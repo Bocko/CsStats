@@ -11,5 +11,4 @@ interface PlayerDataHolder {
     fun getStatsData(): PlayerStatsData?
     fun getFriendlistData(): FriendlistData?
     fun getBanData(): BanData?
-    fun getInventory(): InventoryData?
 }

@@ -30,12 +30,9 @@ import retrofit2.Response
 import java.lang.Exception
 import kotlin.coroutines.CoroutineContext
 
-class InventoryAdapter : RecyclerView.Adapter<InventoryAdapter.InventoryViewHolder>(), CoroutineScope {
+class InventoryAdapter : RecyclerView.Adapter<InventoryAdapter.InventoryViewHolder>() {
 
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main
 
-    private val TAG = "InventoryActivity"
 
     private var invenotry: MutableList<InventoryFullItem?> = ArrayList()
     private val imgURL = "https://steamcommunity-a.akamaihd.net/economy/image/"
@@ -51,8 +48,8 @@ class InventoryAdapter : RecyclerView.Adapter<InventoryAdapter.InventoryViewHold
 
     override fun getItemCount(): Int = invenotry.size
 
-    fun addItems(steamID: Long,ctx:Context) {
-        loadInvData(steamID,ctx)
+    fun addItems(ID: InventoryData) {
+        setupInventory(ID)
     }
 
     inner class InventoryViewHolder(val binding: ItemInventoryBinding): RecyclerView.ViewHolder(binding.root) {
@@ -71,32 +68,6 @@ class InventoryAdapter : RecyclerView.Adapter<InventoryAdapter.InventoryViewHold
                     .load("${imgURL}${item?.decs?.icon_url}")
                     .transition(DrawableTransitionOptions().crossFade())
                     .into(binding.ivItemImg)
-        }
-    }
-
-    private fun loadInvData(playerID: Long,ctx: Context) = launch{
-        NetworkManager.getInventory(playerID)!!.enqueue(object : Callback<InventoryData?> {
-
-            override fun onResponse(call: Call<InventoryData?>,response: Response<InventoryData?>) {
-
-                Log.d(TAG,"Inv onResponse: " + response.code() + " - " + response.message())
-                if (response.isSuccessful) {
-                    displayInvData(response.body())
-                } else {
-                    Toast.makeText(ctx,"(Inv)Private Profile" + response.message(), Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<InventoryData?>,throwable: Throwable) {
-                throwable.printStackTrace()
-                Toast.makeText(ctx,"Network request error occurred, check LOG", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-    private fun displayInvData(receivedInvData: InventoryData?) {
-        if(receivedInvData?.rgInventory != null){
-            setupInventory(receivedInvData)
         }
     }
 

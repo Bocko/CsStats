@@ -93,7 +93,6 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
     override fun getStatsData(): PlayerStatsData? = statsData
     override fun getFriendlistData(): FriendlistData? = friendlistData
     override fun getBanData(): BanData? = banData
-    override fun getInventory(): InventoryData? = inventoryData
 
     private fun loadStatsData() = launch{
         NetworkManager.getStats(playerID)!!.enqueue(object : Callback<PlayerStatsData?> {

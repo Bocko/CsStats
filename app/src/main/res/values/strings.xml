@@ -51,4 +51,6 @@
     <string name="itemAmount">Amount:</string>
     <string name="friendpic">FriendPic</string>
     <string name="deletebutton">DeleteButton</string>
+    <string name="load_inventory">Press to Load Inventory</string>
+    <string name="private_inventory">PRIVATE INVENTORY</string>
 </resources>
