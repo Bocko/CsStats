@@ -35,9 +35,7 @@ class FriendAdapter (private val listener: OnFriendSelectedListener) : RecyclerV
     override fun getItemCount(): Int = friends.size
 
     fun addFriend(ID: String) {
-        if(ID.isNotEmpty()){
-            loadFriendsProfilesData(ID)
-        }
+        loadFriendsProfilesData(ID)
     }
 
     inner class FriendViewHolder(val binding: ItemFriendBinding) :

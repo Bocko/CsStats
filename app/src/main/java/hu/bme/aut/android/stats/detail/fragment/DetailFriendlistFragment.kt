@@ -47,7 +47,11 @@ class DetailFriendlistFragment : Fragment(),FriendAdapter.OnFriendSelectedListen
         playerDataHolder?.getFriendlistData()?.friendslist?.friends?.forEach {
             IDs += it.steamid.toString() + ","
         }
-        adapter.addFriend(IDs)
+        if(IDs.isNotEmpty()) {
+            adapter.addFriend(IDs)
+        }else{
+            binding.tvInfo.visibility = View.VISIBLE
+        }
         binding.rvFriends.adapter = adapter
     }
 

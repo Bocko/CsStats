@@ -8,6 +8,16 @@
     android:orientation="vertical"
     android:background="@color/darkgrey">
 
+    <TextView
+        android:id="@+id/tvInfo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/white"
+        android:text="@string/private_friends"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:visibility="gone"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvFriends"
         android:layout_width="match_parent"
