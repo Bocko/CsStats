@@ -34,6 +34,7 @@
                 android:textAlignment="center"
                 android:text="@string/kill_death_ratio"
                 android:textSize="30sp"
+                android:padding="5dp"
                 android:layout_marginBottom="25dp"
                 android:background="@color/middlegray"/>
 
@@ -48,6 +49,7 @@
                 android:textAlignment="center"
                 android:text="@string/accuracy"
                 android:textSize="30sp"
+                android:padding="5dp"
                 android:layout_marginBottom="25dp"
                 android:layout_marginTop="30dp"
                 android:background="@color/middlegray"/>
@@ -63,6 +65,7 @@
                 android:textAlignment="center"
                 android:text="@string/headshot_accuarcy"
                 android:textSize="30sp"
+                android:padding="5dp"
                 android:layout_marginBottom="25dp"
                 android:layout_marginTop="30dp"
                 android:background="@color/middlegray"/>

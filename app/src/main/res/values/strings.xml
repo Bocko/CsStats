@@ -9,7 +9,7 @@
     <string name="profile">Profile</string>
     <string name="stat">Stats</string>
     <string name="chart">Charts</string>
-    <string name="id">ID:</string>
+    <string name="id">ID64:</string>
     <string name="link">Profile Link:</string>
     <string name="edit">Edit</string>
     <string name="total_number_of_kills">Kills:</string>

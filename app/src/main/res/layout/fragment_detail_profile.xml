@@ -24,7 +24,7 @@
             android:id="@+id/llBorder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="35dp"
             android:padding="5dp">
 
             <ImageView
@@ -41,132 +41,161 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/id"
-            android:textSize="15sp"/>
+            android:textSize="20sp"
+            android:background="@color/middlegray"
+            android:padding="5dp"/>
         <TextView
             android:id="@+id/tvPlayerID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:textSize="15sp"/>
+            android:layout_marginBottom="15dp"
+            android:textSize="20sp"
+            android:layout_marginStart="5dp"/>
 
         <TextView
             android:id="@+id/tvProfileLink"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/link"
-            android:textSize="15sp"/>
+            android:textSize="20sp"
+            android:background="@color/middlegray"
+            android:padding="5dp"/>
         <TextView
             android:id="@+id/tvPlayerProfileLink"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:linksClickable="true"
             android:autoLink="web"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="15dp"
+            android:layout_marginStart="5dp"/>
 
         <TextView
             android:id="@+id/tvCommProfileState"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/visibility_state"
-            android:textSize="15sp"/>
+            android:textSize="20sp"
+            android:background="@color/middlegray"
+            android:padding="5dp"/>
         <TextView
             android:id="@+id/tvPlayerCommProfileState"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_marginBottom="10dp"/>
+            android:textSize="20sp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginStart="5dp"/>
 
         <TextView
             android:id="@+id/tvState"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/profile_state"
-            android:textSize="15sp"/>
+            android:textSize="20sp"
+            android:background="@color/middlegray"
+            android:padding="5dp"/>
         <TextView
             android:id="@+id/tvPlayerState"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_marginBottom="10dp"/>
+            android:textSize="20sp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginStart="5dp"/>
 
         <TextView
             android:id="@+id/tvCommBan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/profile_comm_ban"
-            android:textSize="15sp"/>
+            android:textSize="20sp"
+            android:background="@color/middlegray"
+            android:padding="5dp"/>
         <TextView
             android:id="@+id/tvPlayerCommBan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_marginBottom="10dp"/>
+            android:textSize="20sp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginStart="5dp"/>
 
         <TextView
             android:id="@+id/tvVacBan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/profile_vac_ban"
-            android:textSize="15sp"/>
+            android:textSize="20sp"
+            android:background="@color/middlegray"
+            android:padding="5dp"/>
         <TextView
             android:id="@+id/tvPlayerVacBan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_marginBottom="10dp"/>
+            android:textSize="20sp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginStart="5dp"/>
 
         <TextView
             android:id="@+id/tvNumVacBan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/profile_num_vac_ban"
-            android:textSize="15sp"/>
+            android:textSize="20sp"
+            android:background="@color/middlegray"
+            android:padding="5dp"/>
         <TextView
             android:id="@+id/tvPlayerNumVacBan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_marginBottom="10dp"/>
+            android:textSize="20sp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginStart="5dp"/>
 
         <TextView
             android:id="@+id/tvVacBanDays"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/profile_vac_ban_days"
-            android:textSize="15sp"/>
+            android:textSize="20sp"
+            android:background="@color/middlegray"
+            android:padding="5dp"/>
         <TextView
             android:id="@+id/tvPlayerVacBanDays"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_marginBottom="10dp"/>
+            android:textSize="20sp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginStart="5dp"/>
 
         <TextView
             android:id="@+id/tvNumBan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/profile_num_ban"
-            android:textSize="15sp"/>
+            android:textSize="20sp"
+            android:background="@color/middlegray"
+            android:padding="5dp"/>
         <TextView
             android:id="@+id/tvPlayerNumBan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_marginBottom="10dp"/>
+            android:textSize="20sp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginStart="5dp"/>
 
         <TextView
             android:id="@+id/tvTradeBan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/profile_trade_ban"
-            android:textSize="15sp"/>
+            android:textSize="20sp"
+            android:background="@color/middlegray"
+            android:padding="5dp"/>
         <TextView
             android:id="@+id/tvPlayerTradeBan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_marginBottom="10dp"/>
+            android:textSize="20sp"
+            android:layout_marginStart="5dp"/>
 
     </LinearLayout>
 </ScrollView>
