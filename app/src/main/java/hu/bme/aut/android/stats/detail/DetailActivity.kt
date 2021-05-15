@@ -104,7 +104,7 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
                 if (response.isSuccessful) {
                     displayStatsData(response.body())
                 } else {
-                    Toast.makeText(this@DetailActivity,"Private Profile" + response.message(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@DetailActivity,"(Stats)Private Profile" + response.message(),Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -131,7 +131,7 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
                 if (response.isSuccessful) {
                     displayProfileData(response.body())
                 } else {
-                    Toast.makeText(this@DetailActivity, "Error: " + response.message(), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@DetailActivity, "Profile Error: " + response.message(), Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -186,7 +186,7 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
                     displayBanData(response.body())
 
                 } else {
-                    Toast.makeText(this@DetailActivity,"Private Profile" + response.message(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@DetailActivity,"(ban)Private Profile" + response.message(),Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -209,12 +209,12 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
 
             override fun onResponse(call: Call<InventoryData?>,response: Response<InventoryData?>) {
 
-                Log.d(TAG, "Inv onResponse: " + response.code())
+                Log.d(TAG, "Inv onResponse: " + response.code() + " - " + response.message())
                 if (response.isSuccessful) {
                     displayInvData(response.body())
 
                 } else {
-                    Toast.makeText(this@DetailActivity,"Private Profile" + response.message(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@DetailActivity,"(Inv)Private Profile" + response.message(),Toast.LENGTH_SHORT).show()
                 }
             }
 

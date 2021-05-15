@@ -1,5 +1,6 @@
 package hu.bme.aut.android.stats.detail.fragment
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -53,7 +54,7 @@ class DetailInventoryFragment : Fragment(){
 
     private fun setupInventory(){
         val inv = playerDataHolder?.getInventory()!!
-        val itemList: MutableList<InventoryFullItem?> = ArrayList()
+        var itemList: MutableList<InventoryFullItem?> = ArrayList()
         var inIt = false
 
         for(entry in inv.rgInventory!!) {
@@ -78,6 +79,50 @@ class DetailInventoryFragment : Fragment(){
                 }
             }
         }
+        itemList = sortInventory(itemList)
         adapter.addItems(itemList)
+    }
+
+    private fun sortInventory(itemList: MutableList<InventoryFullItem?>): MutableList<InventoryFullItem?> {
+
+        for (i in 0 until itemList.size-1){
+            var min:Int = i
+            for (j in i+1 until itemList.size){
+                var color = ""
+                var colorMin = ""
+                itemList[j]?.decs?.tags?.forEach {
+                    if (!it.color.isNullOrEmpty()){
+                        color = it.color!!
+                    }
+                }
+                itemList[min]?.decs?.tags?.forEach {
+                    if (!it.color.isNullOrEmpty()){
+                        colorMin = it.color!!
+                    }
+                }
+                if (colorToInt(color) > colorToInt(colorMin)){
+                    min = j
+                }
+            }
+            if(min != i){
+                itemList[i] = itemList[min].also { itemList[min] = itemList[i] }
+            }
+        }
+
+        return itemList
+    }
+
+    private fun colorToInt(color:String): Int{
+        when(color){
+            "b0c3d9" -> return 1
+            "5e98d9" -> return 2
+            "4b69ff" -> return 3
+            "8847ff" -> return 4
+            "d32ce6" -> return 5
+            "eb4b4b" -> return 6
+            "e4ae39" -> return 7
+            else -> 0
+        }
+        return 0
     }
 }
