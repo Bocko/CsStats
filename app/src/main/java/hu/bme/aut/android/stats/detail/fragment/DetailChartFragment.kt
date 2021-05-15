@@ -28,7 +28,7 @@ class DetailChartFragment: Fragment() {
             activity as PlayerDataHolder?
         } else {
             throw RuntimeException(
-                "Activity must implement WeatherDataHolder interface!"
+                "Activity must implement PlayerDataHolder interface!"
             )
         }
     }
