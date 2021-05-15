@@ -13,16 +13,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/load_inventory"
-        android:textSize="30dp"/>
+        android:textSize="30sp"/>
 
     <TextView
         android:id="@+id/tvInfo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:text="@string/private_inventory"
         android:gravity="center"
-        android:textColor="@color/white"
         android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView

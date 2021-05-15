@@ -23,16 +23,16 @@
         <ImageView
             android:id="@+id/ivPlayerImg"
             android:layout_width="50dp"
-            android:layout_height="50dp"/>
+            android:layout_height="50dp"
+            android:contentDescription="@string/playerpic" />
 
         <TextView
             android:id="@+id/playerItemNameTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="10"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:text="@string/playerName"
-            android:textColor="@color/white"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_gravity="center"/>
@@ -44,7 +44,8 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_delete_grey600_48dp" />
+            android:src="@drawable/ic_delete_grey600_48dp"
+            android:contentDescription="@string/deletebutton" />
 
     </LinearLayout>
 </LinearLayout>

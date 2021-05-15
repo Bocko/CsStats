@@ -55,4 +55,9 @@
     <string name="private_inventory">PRIVATE INVENTORY</string>
     <string name="private_friends">PRIVATE FRIENDS</string>
     <string name="private_stats">PRIVATE STATS</string>
+    <string name="player_statistics">PLAYER STATISTICS</string>
+    <string name="map_statistics">MAP STATISTICS</string>
+    <string name="itempic">ItemPic</string>
+    <string name="steamid_url">SteamID/URL</string>
+    <string name="playerpic">playerpic</string>
 </resources>

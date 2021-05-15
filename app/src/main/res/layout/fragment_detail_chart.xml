@@ -10,9 +10,8 @@
         android:id="@+id/tvInfo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="@color/white"
         android:text="@string/private_stats"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:gravity="center"
         android:visibility="gone"/>
 
@@ -34,8 +33,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:text="@string/kill_death_ratio"
-                android:textColor="@color/white"
-                android:textSize="30dp"
+                android:textSize="30sp"
                 android:layout_marginBottom="25dp"
                 />
 
@@ -49,10 +47,9 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:text="@string/accuracy"
-                android:textColor="@color/white"
-                android:textSize="30dp"
+                android:textSize="30sp"
                 android:layout_marginBottom="25dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="30dp"
                 />
 
             <com.github.mikephil.charting.charts.PieChart
@@ -65,10 +62,9 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:text="@string/headshot_accuarcy"
-                android:textColor="@color/white"
-                android:textSize="30dp"
+                android:textSize="30sp"
                 android:layout_marginBottom="25dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="30dp"
                 />
 
             <com.github.mikephil.charting.charts.PieChart
