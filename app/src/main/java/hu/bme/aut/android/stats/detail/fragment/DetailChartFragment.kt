@@ -46,6 +46,9 @@ class DetailChartFragment: Fragment() {
 
         if (playerDataHolder!!.getStatsData() != null) {
             displayStatData()
+        } else {
+            binding.tvInfo.visibility = View.VISIBLE
+            binding.svCharts.visibility = View.GONE
         }
     }
 
@@ -58,7 +61,7 @@ class DetailChartFragment: Fragment() {
     }
 
     private fun loadChart(chart: PieChart,valueOne: Int?,labelOne:String,valueTwo: Int?,labeltwo: String){
-        var entries: ArrayList<PieEntry> = ArrayList()
+        val entries: ArrayList<PieEntry> = ArrayList()
 
 
         entries.add(PieEntry(valueOne!!.toFloat(), labelOne))
@@ -71,7 +74,7 @@ class DetailChartFragment: Fragment() {
         data.setValueTextSize(15f)
         data.setValueTextColor(Color.WHITE)
         chart.description.text = ""
-        var kd: Double = valueOne.toDouble()/valueTwo.toDouble()
+        val kd: Double = valueOne.toDouble()/valueTwo.toDouble()
         chart.centerText = "%.2f".format(kd)
         chart.setCenterTextSize(30f)
         chart.setCenterTextColor(Color.WHITE)

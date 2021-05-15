@@ -39,6 +39,9 @@ class DetailStatFragment: Fragment() {
 
         if (playerDataHolder!!.getStatsData() != null) {
             displayStatData()
+        } else {
+            binding.tvInfo.visibility = View.VISIBLE
+            binding.svStats.visibility = View.GONE
         }
     }
 

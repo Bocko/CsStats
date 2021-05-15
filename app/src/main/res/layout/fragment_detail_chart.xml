@@ -1,64 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/darkgrey">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/tvInfo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:orientation="vertical"
-        android:paddingBottom="50dp">
+        android:layout_height="match_parent"
+        android:textColor="@color/white"
+        android:text="@string/private_stats"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:visibility="gone"/>
 
-        <TextView
+    <ScrollView
+        android:id="@+id/svCharts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/darkgrey">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="@string/kill_death_ratio"
-            android:textColor="@color/white"
-            android:textSize="30dp"
-            android:layout_marginBottom="25dp"
-            />
+            android:layout_margin="16dp"
+            android:orientation="vertical"
+            android:paddingBottom="50dp">
 
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/pieKD"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="@string/kill_death_ratio"
+                android:textColor="@color/white"
+                android:textSize="30dp"
+                android:layout_marginBottom="25dp"
+                />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="@string/accuracy"
-            android:textColor="@color/white"
-            android:textSize="30dp"
-            android:layout_marginBottom="25dp"
-            android:layout_marginTop="25dp"
-            />
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieKD"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"/>
 
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/pieAccu"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="@string/accuracy"
+                android:textColor="@color/white"
+                android:textSize="30dp"
+                android:layout_marginBottom="25dp"
+                android:layout_marginTop="25dp"
+                />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="@string/headshot_accuarcy"
-            android:textColor="@color/white"
-            android:textSize="30dp"
-            android:layout_marginBottom="25dp"
-            android:layout_marginTop="25dp"
-            />
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieAccu"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"/>
 
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/pieHSAccu"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="@string/headshot_accuarcy"
+                android:textColor="@color/white"
+                android:textSize="30dp"
+                android:layout_marginBottom="25dp"
+                android:layout_marginTop="25dp"
+                />
 
-    </LinearLayout>
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieHSAccu"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"/>
 
-</ScrollView>
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>
