@@ -60,4 +60,10 @@
     <string name="itempic">ItemPic</string>
     <string name="steamid_url">SteamID/URL</string>
     <string name="playerpic">playerpic</string>
+    <string name="rounds_played">Rounds Played:</string>
+    <string name="rounds_won">Rounds Won:</string>
+    <string name="dust2">Dust 2:</string>
+    <string name="inferno">Inferno:</string>
+    <string name="nuke">Nuke:</string>
+    <string name="train">Train:</string>
 </resources>
