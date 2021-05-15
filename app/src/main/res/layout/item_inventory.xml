@@ -3,11 +3,8 @@
 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingBottom="4dp"
-    android:paddingLeft="4dp"
-    android:paddingRight="4dp"
-    android:paddingTop="4dp"
+    android:paddingHorizontal="10dp"
+    android:paddingVertical="5dp"
     android:background="@color/darkgrey">
 
     <LinearLayout
