@@ -78,7 +78,11 @@ class DetailInventoryFragment : Fragment(),CoroutineScope{
                 if (response.isSuccessful) {
                     displayInvData(response.body())
                 } else {
-                    Toast.makeText(binding.root.context,"(Inv)Private Profile" + response.message(), Toast.LENGTH_SHORT).show()
+                    if(response.code() == 429){
+                        Toast.makeText(binding.root.context,"Too Many Requests! Please Wait a bit!", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(binding.root.context,"Inventory Error: " + response.message(), Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
 

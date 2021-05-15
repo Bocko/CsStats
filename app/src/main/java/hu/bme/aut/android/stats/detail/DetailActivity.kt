@@ -103,7 +103,9 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
                 if (response.isSuccessful) {
                     displayStatsData(response.body())
                 } else {
-                    Toast.makeText(this@DetailActivity,"Stats Request Error" + response.message(),Toast.LENGTH_SHORT).show()
+                    if(response.code() != 500){
+                        Toast.makeText(this@DetailActivity,"Stats Error: " + response.message(),Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
 
@@ -157,7 +159,9 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
                 if (response.isSuccessful) {
                     displayFriendsData(response.body())
                 } else {
-                    Toast.makeText(this@DetailActivity,"Private Friends "+response.message(),Toast.LENGTH_SHORT).show()
+                    if(response.code() != 401){
+                        Toast.makeText(this@DetailActivity,response.message(),Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
 
@@ -183,9 +187,8 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
                 Log.d(TAG, "Ban onResponse: " + response.code())
                 if (response.isSuccessful) {
                     displayBanData(response.body())
-
                 } else {
-                    Toast.makeText(this@DetailActivity,"Ban Request Error:" + response.message(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@DetailActivity,"Ban Error:" + response.message(),Toast.LENGTH_SHORT).show()
                 }
             }
 
