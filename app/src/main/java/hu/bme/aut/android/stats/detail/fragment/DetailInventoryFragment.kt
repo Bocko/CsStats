@@ -93,6 +93,7 @@ class DetailInventoryFragment : Fragment(),CoroutineScope{
         if(receivedInvData?.success.equals("true")){
             adapter.addItems(receivedInvData!!)
             binding.btnLoad.visibility = View.GONE
+            binding.rvInventory.visibility = View.VISIBLE
         } else {
             binding.btnLoad.visibility = View.GONE
             binding.tvInfo.visibility = View.VISIBLE
