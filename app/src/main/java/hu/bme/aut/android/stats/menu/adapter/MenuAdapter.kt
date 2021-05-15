@@ -41,9 +41,9 @@ class MenuAdapter(private val listener: OnPlayerSelectedListener) : RecyclerView
     fun addPlayer(IDorUrl: String,ctx: Context) {
         if(IDorUrl.isNotEmpty()){
             try {
-                loadProfileData(IDorUrl,ctx)
-            }catch (e :Exception){
-                loadUrlData(IDorUrl,ctx)
+                loadProfileData(IDorUrl, ctx)
+            } catch (e: Exception) {
+                loadUrlData(IDorUrl, ctx)
             }
         }
     }
@@ -82,22 +82,26 @@ class MenuAdapter(private val listener: OnPlayerSelectedListener) : RecyclerView
     }
 
     private fun loadProfileData(playerIDorURL: String?,ctx: Context){
-        NetworkManager.getProfile(playerIDorURL?.toLong())!!.enqueue(object : Callback<ProfileData?> {
+        if(!players.any { p -> p?.steamid == playerIDorURL?.toLong() }) {
+            NetworkManager.getProfile(playerIDorURL?.toLong())!!.enqueue(object : Callback<ProfileData?> {
 
-            override fun onResponse( call: Call<ProfileData?>, response: Response<ProfileData?>) {
-                Log.d(TAG, "profile onResponse: " + response.code())
-                if (response.isSuccessful) {
-                    displayProfileData(response.body())
-                } else {
-                    Toast.makeText(ctx, "Profile Error: " + response.message(), Toast.LENGTH_SHORT).show()
+                override fun onResponse(call: Call<ProfileData?>, response: Response<ProfileData?>) {
+                    Log.d(TAG, "profile onResponse: " + response.code())
+                    if (response.isSuccessful) {
+                        displayProfileData(response.body())
+                    } else {
+                        Toast.makeText(ctx, "Profile Error: " + response.message(), Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<ProfileData?>, throwable: Throwable) {
-                throwable.printStackTrace()
-                Toast.makeText(ctx, "Network request error occurred, check LOG", Toast.LENGTH_SHORT).show()
-            }
-        })
+                override fun onFailure(call: Call<ProfileData?>, throwable: Throwable) {
+                    throwable.printStackTrace()
+                    Toast.makeText(ctx, "Network request error occurred, check LOG", Toast.LENGTH_SHORT).show()
+                }
+            })
+        } else {
+            Toast.makeText(ctx, "Player Already In The List", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun displayProfileData(receivedProfileData: ProfileData?) {
