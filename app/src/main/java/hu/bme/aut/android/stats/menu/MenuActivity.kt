@@ -36,6 +36,7 @@ class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener, 
         super.onCreate(savedInstanceState)
         binding = ActivityMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         binding.toolbar.title = "Current Player Count: "
         loadPlayerCountData()
         initFab()
@@ -47,7 +48,7 @@ class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener, 
         if (resultCode == 1) {
             launch {
                 val player = data?.getStringExtra("player")
-                adapter.addPlayer(player!!)
+                adapter.addPlayer(player!!,this@MenuActivity)
             }
         }
     }
@@ -61,8 +62,8 @@ class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener, 
     private fun initRecyclerView() {
         binding.rvMenu.layoutManager = LinearLayoutManager(this)
         adapter = MenuAdapter(this)
-        adapter.addPlayer("bockoofficial")
-        adapter.addPlayer("everynameistaken")
+        adapter.addPlayer("bockoofficial",this@MenuActivity)
+        adapter.addPlayer("everynameistaken",this@MenuActivity)
         binding.rvMenu.adapter = adapter
     }
 
@@ -78,11 +79,10 @@ class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener, 
     }
 
     override fun onPlayerAdded(idOrUrl: String) {
-        adapter.addPlayer(idOrUrl)
+        adapter.addPlayer(idOrUrl,this@MenuActivity)
     }
 
     private fun loadPlayerCountData(){
-
         NetworkManager.getPlayerCount()!!.enqueue(object : Callback<CountData?> {
 
             override fun onResponse(call: Call<CountData?>,response: Response<CountData?>) {
@@ -90,7 +90,7 @@ class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener, 
                 if (response.isSuccessful) {
                     displayPlayerCountData(response.body())
                 } else {
-                    Toast.makeText(this@MenuActivity, "Error: " + response.message(), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MenuActivity, "Player Count Error: " + response.message(), Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onFailure(call: Call<CountData?>,throwable: Throwable) {

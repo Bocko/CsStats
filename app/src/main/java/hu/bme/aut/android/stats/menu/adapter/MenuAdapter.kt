@@ -1,5 +1,6 @@
 package hu.bme.aut.android.stats.menu.adapter
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -37,14 +38,13 @@ class MenuAdapter(private val listener: OnPlayerSelectedListener) : RecyclerView
 
     override fun getItemCount(): Int = players.size
 
-    fun addPlayer(IDorUrl: String) {
+    fun addPlayer(IDorUrl: String,ctx: Context) {
         if(IDorUrl.isNotEmpty()){
             try {
-                loadProfileData(IDorUrl)
+                loadProfileData(IDorUrl,ctx)
             }catch (e :Exception){
-                loadUrlData(IDorUrl)
+                loadUrlData(IDorUrl,ctx)
             }
-
         }
     }
 
@@ -81,32 +81,7 @@ class MenuAdapter(private val listener: OnPlayerSelectedListener) : RecyclerView
         fun onPlayerDeleted(position: Int)
     }
 
-    private fun loadUrlData(playerIDorURL: String?){
-        NetworkManager.getIDFromURL(playerIDorURL)!!.enqueue(object : Callback<UrlData?> {
-
-            override fun onResponse(call: Call<UrlData?>, response: Response<UrlData?>) {
-                Log.d(TAG, "url onResponse: " + response.code())
-                if (response.isSuccessful) {
-                    displayUrlData(response.body())
-                } else {
-                    Log.d(TAG, "Error: " + response.message())
-                }
-            }
-
-            override fun onFailure(call: Call<UrlData?>,throwable: Throwable) {
-                throwable.printStackTrace()
-                Log.d(TAG, "Network request error occurred")
-            }
-        })
-    }
-
-    private fun displayUrlData(receivedURLData: UrlData?) {
-        if (receivedURLData?.response?.success == "1".toString()){
-            loadProfileData(receivedURLData.response?.steamid.toString())
-        }
-    }
-
-    private fun loadProfileData(playerIDorURL: String?){
+    private fun loadProfileData(playerIDorURL: String?,ctx: Context){
         NetworkManager.getProfile(playerIDorURL?.toLong())!!.enqueue(object : Callback<ProfileData?> {
 
             override fun onResponse( call: Call<ProfileData?>, response: Response<ProfileData?>) {
@@ -114,13 +89,13 @@ class MenuAdapter(private val listener: OnPlayerSelectedListener) : RecyclerView
                 if (response.isSuccessful) {
                     displayProfileData(response.body())
                 } else {
-                    Log.d(TAG, "Error: " + response.message())
+                    Toast.makeText(ctx, "Profile Error: " + response.message(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<ProfileData?>, throwable: Throwable) {
                 throwable.printStackTrace()
-                Log.d(TAG, "Network request error occurred")
+                Toast.makeText(ctx, "Network request error occurred, check LOG", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -130,4 +105,30 @@ class MenuAdapter(private val listener: OnPlayerSelectedListener) : RecyclerView
         notifyItemInserted(players.size - 1)
     }
 
+    private fun loadUrlData(playerIDorURL: String?,ctx: Context){
+        NetworkManager.getIDFromURL(playerIDorURL)!!.enqueue(object : Callback<UrlData?> {
+
+            override fun onResponse(call: Call<UrlData?>, response: Response<UrlData?>) {
+                Log.d(TAG, "url onResponse: " + response.code())
+                if (response.isSuccessful) {
+                    displayUrlData(response.body(),ctx)
+                } else {
+                    Toast.makeText(ctx, "URL Error: " + response.message(), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<UrlData?>,throwable: Throwable) {
+                throwable.printStackTrace()
+                Toast.makeText(ctx, "Network request error occurred, check LOG", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun displayUrlData(receivedURLData: UrlData?,ctx: Context) {
+        if (receivedURLData?.response?.success.equals("1")){
+            loadProfileData(receivedURLData?.response?.steamid.toString(),ctx)
+        } else {
+            Toast.makeText(ctx, "Profile Not Found", Toast.LENGTH_SHORT).show()
+        }
+    }
 }
