@@ -82,8 +82,12 @@ class FriendAdapter (private val listener: OnFriendSelectedListener) : RecyclerV
     }
 
     private fun displayProfileData(receivedFriendsData: ProfileData?) {
-        friends = receivedFriendsData?.response?.players!!.toMutableList()
+        friends = friendSort(receivedFriendsData?.response?.players!!.toMutableList())
         notifyDataSetChanged()
+    }
+
+    private fun friendSort(friend: MutableList<Player?>): MutableList<Player?>{
+       return friend.sortedWith(compareByDescending { it?.personaname }).reversed().toMutableList()
     }
 
 }
