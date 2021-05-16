@@ -87,8 +87,6 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
         return super.onOptionsItemSelected(item)
     }
 
-
-
     override fun getProfileData(): ProfileData? = profileData
     override fun getStatsData(): PlayerStatsData? = statsData
     override fun getFriendlistData(): FriendlistData? = friendlistData

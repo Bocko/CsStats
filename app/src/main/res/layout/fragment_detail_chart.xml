@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/darkgrey"
-    android:padding="10dp">
+    android:background="@color/darkgrey">
 
     <TextView
         android:id="@+id/tvInfo"
@@ -20,7 +19,8 @@
         android:id="@+id/svCharts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/darkgrey">
+        android:background="@color/darkgrey"
+        android:padding="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"

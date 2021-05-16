@@ -9,9 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import hu.bme.aut.android.stats.databinding.ActivityMenuBinding
 import hu.bme.aut.android.stats.detail.DetailActivity
-import hu.bme.aut.android.stats.detail.fragment.adapter.FriendAdapter
 import hu.bme.aut.android.stats.menu.adapter.MenuAdapter
-import hu.bme.aut.android.stats.menu.fragment.AddPlayerDialogFragment
 import hu.bme.aut.android.stats.model.playercount.CountData
 import hu.bme.aut.android.stats.network.NetworkManager
 import kotlinx.coroutines.CoroutineScope
@@ -22,7 +20,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import kotlin.coroutines.CoroutineContext
 
-class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener, AddPlayerDialogFragment.AddPlayerDialogListener , CoroutineScope{
+class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener, CoroutineScope{
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
@@ -45,6 +43,7 @@ class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener, 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?){
         super.onActivityResult(requestCode, resultCode, data)
+        Log.d("menu", resultCode.toString())
         if (resultCode == 1) {
             launch {
                 val player = data?.getStringExtra("player")
@@ -55,8 +54,9 @@ class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener, 
 
     private fun initFab() {
         binding.fab.setOnClickListener{
-            var addplayer = AddPlayerDialogFragment()
-            addplayer.show(supportFragmentManager, AddPlayerDialogFragment::class.java.simpleName)
+            val showAddPlayIntent = Intent()
+            showAddPlayIntent.setClass(this@MenuActivity, AddPlayerActivity::class.java)
+            startActivityForResult(showAddPlayIntent,1)
         }
     }
 
@@ -77,10 +77,6 @@ class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener, 
 
     override fun onPlayerDeleted(position: Int) {
         adapter.removePlayer(position)
-    }
-
-    override fun onPlayerAdded(idOrUrl: String) {
-        adapter.addPlayer(idOrUrl,this@MenuActivity)
     }
 
     private fun loadPlayerCountData(){

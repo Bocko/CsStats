@@ -58,4 +58,6 @@
     <string name="inferno">Inferno:</string>
     <string name="nuke">Nuke:</string>
     <string name="train">Train:</string>
+    <string name="add_new_player">Add New Player</string>
+    <string name="add">Add</string>
 </resources>
