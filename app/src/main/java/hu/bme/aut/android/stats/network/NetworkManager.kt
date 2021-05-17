@@ -1,5 +1,6 @@
 package hu.bme.aut.android.stats.network
 
+import hu.bme.aut.android.stats.model.ItemPrice.ItemPriceData
 import hu.bme.aut.android.stats.model.ban.BanData
 import hu.bme.aut.android.stats.model.friends.FriendlistData
 import hu.bme.aut.android.stats.model.inventory.InventoryData
@@ -68,6 +69,10 @@ object NetworkManager {
 
     fun getInventory(steamID: Long?): Call<InventoryData?>?{
         return inventoryApi.getInventory(steamID)
+    }
+
+    fun getItemPrice(mhName: String?): Call<ItemPriceData?>?{
+        return inventoryApi.getItemPrice(3,730,mhName)
     }
 
 }

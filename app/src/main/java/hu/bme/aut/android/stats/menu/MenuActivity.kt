@@ -43,7 +43,6 @@ class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener, 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?){
         super.onActivityResult(requestCode, resultCode, data)
-        Log.d("menu", resultCode.toString())
         if (resultCode == 1) {
             launch {
                 val player = data?.getStringExtra("player")
