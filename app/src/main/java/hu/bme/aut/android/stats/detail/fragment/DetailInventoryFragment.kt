@@ -1,7 +1,6 @@
 package hu.bme.aut.android.stats.detail.fragment
 
-import android.content.Context
-import android.graphics.Color
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,15 +9,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import hu.bme.aut.android.stats.databinding.FragmentDetailFriendlistBinding
 import hu.bme.aut.android.stats.databinding.FragmentDetailInventoryBinding
-import hu.bme.aut.android.stats.databinding.FragmentDetailProfileBinding
+import hu.bme.aut.android.stats.detail.DetailActivity
+import hu.bme.aut.android.stats.detail.InspectActivity
 import hu.bme.aut.android.stats.detail.PlayerDataHolder
-import hu.bme.aut.android.stats.detail.fragment.adapter.FriendAdapter
 import hu.bme.aut.android.stats.detail.fragment.adapter.InventoryAdapter
-import hu.bme.aut.android.stats.menu.adapter.MenuAdapter
+import hu.bme.aut.android.stats.model.inventory.DescriptionItem
 import hu.bme.aut.android.stats.model.inventory.InventoryData
-import hu.bme.aut.android.stats.model.inventory.InventoryFullItem
 import hu.bme.aut.android.stats.network.NetworkManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +25,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import kotlin.coroutines.CoroutineContext
 
-class DetailInventoryFragment : Fragment(),CoroutineScope{
+class DetailInventoryFragment : Fragment(),CoroutineScope, InventoryAdapter.OnItemSelectedListener{
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
@@ -64,9 +61,24 @@ class DetailInventoryFragment : Fragment(),CoroutineScope{
 
     private fun initRecyclerView() {
         binding.rvInventory.layoutManager = LinearLayoutManager(binding.rvInventory.context)
-        adapter = InventoryAdapter()
+        adapter = InventoryAdapter(this)
 
         binding.rvInventory.adapter = adapter
+    }
+
+    override fun onItemSelected(decs: DescriptionItem) {
+        val showInspectIntent = Intent()
+        showInspectIntent.setClass(binding.root.context,InspectActivity::class.java)
+        showInspectIntent.putExtra("icon", decs.icon_url)
+        showInspectIntent.putExtra("name",decs.market_hash_name)
+        var color = ""
+        decs.tags?.forEach {
+            if (it.color != null){
+                color = it.color!!
+            }
+        }
+        showInspectIntent.putExtra("color",color)
+        startActivity(showInspectIntent)
     }
 
     private fun loadInvData(playerID: Long) = launch{

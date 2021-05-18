@@ -1,38 +1,20 @@
 package hu.bme.aut.android.stats.detail.fragment.adapter
 
-import android.content.Context
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import hu.bme.aut.android.stats.databinding.ItemFriendBinding
 import hu.bme.aut.android.stats.databinding.ItemInventoryBinding
-import hu.bme.aut.android.stats.databinding.ItemPlayerBinding
-import hu.bme.aut.android.stats.detail.DetailActivity
-import hu.bme.aut.android.stats.detail.adapter.DetailPagerAdapter
-import hu.bme.aut.android.stats.menu.adapter.MenuAdapter
+import hu.bme.aut.android.stats.model.inventory.DescriptionItem
 import hu.bme.aut.android.stats.model.inventory.InventoryData
 import hu.bme.aut.android.stats.model.inventory.InventoryFullItem
-import hu.bme.aut.android.stats.model.profile.Player
-import hu.bme.aut.android.stats.model.profile.ProfileData
-import hu.bme.aut.android.stats.model.url.UrlData
-import hu.bme.aut.android.stats.network.NetworkManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.lang.Exception
 import kotlin.coroutines.CoroutineContext
 
-class InventoryAdapter : RecyclerView.Adapter<InventoryAdapter.InventoryViewHolder>() {
-
-
+class InventoryAdapter(private val listener: OnItemSelectedListener) : RecyclerView.Adapter<InventoryAdapter.InventoryViewHolder>(){
 
     private var invenotry: MutableList<InventoryFullItem?> = ArrayList()
     private val imgURL = "https://steamcommunity-a.akamaihd.net/economy/image/"
@@ -55,6 +37,12 @@ class InventoryAdapter : RecyclerView.Adapter<InventoryAdapter.InventoryViewHold
     inner class InventoryViewHolder(val binding: ItemInventoryBinding): RecyclerView.ViewHolder(binding.root) {
         var item: InventoryFullItem? = null
 
+        init {
+            binding.root.setOnClickListener {
+                listener.onItemSelected(item?.decs!!)
+            }
+        }
+
         fun bind(newItem: InventoryFullItem?) {
             item = newItem!!
             binding.tvItemName.text = item?.decs?.market_name
@@ -69,6 +57,10 @@ class InventoryAdapter : RecyclerView.Adapter<InventoryAdapter.InventoryViewHold
                     .transition(DrawableTransitionOptions().crossFade())
                     .into(binding.ivItemImg)
         }
+    }
+
+    interface OnItemSelectedListener {
+        fun onItemSelected(decs: DescriptionItem)
     }
 
     private fun setupInventory(inventoryData: InventoryData){

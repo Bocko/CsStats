@@ -52,17 +52,12 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
         setContentView(binding.root)
 
         playerID = intent.getStringExtra(PLAYER_NAME)?.toLong()
-    }
-
-    override fun onResume() {
-        super.onResume()
 
         runBlocking {
             loadProfileData()
             loadFriendlistData()
             loadStatsData()
             loadBanData()
-            //loadInvData()
         }
         val detailPagerAdapter = DetailPagerAdapter(this)
         binding.mainViewPager.adapter = detailPagerAdapter
