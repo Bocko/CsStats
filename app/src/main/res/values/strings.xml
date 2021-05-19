@@ -64,4 +64,5 @@
     <string name="median_price">Median Price:</string>
     <string name="number_of_units_on_market">Number Of Units On Market:</string>
     <string name="not_found">NOT FOUND</string>
+    <string name="sticker">sticker</string>
 </resources>

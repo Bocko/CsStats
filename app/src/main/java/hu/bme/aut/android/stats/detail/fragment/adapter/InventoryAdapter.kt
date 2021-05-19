@@ -79,9 +79,11 @@ class InventoryAdapter(private val listener: OnItemSelectedListener) : RecyclerV
             }else{
                 for (it in itemList){
                     if(it?.decs?.market_name.equals(item.decs?.market_name)){
-                        it?.amount = it?.amount?.toInt()?.plus(1).toString()
-                        inIt = false
-                        break
+                        if (it?.decs?.type!!.contains("Container") || it.decs?.type!!.contains("Graffiti") || it.decs?.type!!.contains("Sticker")){
+                            it.amount = it.amount?.toInt()?.plus(1).toString()
+                            inIt = false
+                            break
+                        }
                     }else{
                         inIt = true
                     }
