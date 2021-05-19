@@ -6,16 +6,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import hu.bme.aut.android.stats.databinding.FragmentDetailInventoryBinding
-import hu.bme.aut.android.stats.detail.DetailActivity
 import hu.bme.aut.android.stats.detail.InspectActivity
 import hu.bme.aut.android.stats.detail.PlayerDataHolder
 import hu.bme.aut.android.stats.detail.fragment.adapter.InventoryAdapter
-import hu.bme.aut.android.stats.model.inventory.DescriptionItem
 import hu.bme.aut.android.stats.model.inventory.InventoryData
+import hu.bme.aut.android.stats.model.inventory.InventoryFullItem
 import hu.bme.aut.android.stats.network.NetworkManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +24,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import kotlin.coroutines.CoroutineContext
+
 
 class DetailInventoryFragment : Fragment(),CoroutineScope, InventoryAdapter.OnItemSelectedListener{
 
@@ -66,18 +67,47 @@ class DetailInventoryFragment : Fragment(),CoroutineScope, InventoryAdapter.OnIt
         binding.rvInventory.adapter = adapter
     }
 
-    override fun onItemSelected(decs: DescriptionItem) {
+    override fun onItemSelected(item: InventoryFullItem) {
+        val picRegex = "https://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?".toRegex()
+        val nameRegex = "(Sticker|Patch): (.*)</center>".toRegex()
         val showInspectIntent = Intent()
         showInspectIntent.setClass(binding.root.context,InspectActivity::class.java)
-        showInspectIntent.putExtra("icon", decs.icon_url)
-        showInspectIntent.putExtra("name",decs.market_hash_name)
+        showInspectIntent.putExtra("icon", item.decs?.icon_url)
+        showInspectIntent.putExtra("name",item.decs?.market_hash_name)
         var color = ""
-        decs.tags?.forEach {
+        item.decs?.tags?.forEach {
             if (it.color != null){
                 color = it.color!!
             }
         }
         showInspectIntent.putExtra("color",color)
+
+        var inspect = item.decs?.actions?.get(0)?.link
+        if (inspect != null){
+            inspect = inspect.replace("%owner_steamid%",playerDataHolder?.getProfileData()?.response?.players?.get(0)?.steamid.toString())
+            inspect = inspect.replace("%assetid%", item.id.toString())
+        }
+
+        var stickerHtml = ""
+        item.decs?.descriptions?.forEach {
+            if (it.value!!.contains("sticker_info")){
+                stickerHtml = it.value!!
+            }
+        }
+
+        val stickerPics: ArrayList<String> = ArrayList()
+        var stickerNames = ""
+        if(stickerHtml.isNotEmpty()){
+            picRegex.findAll(stickerHtml).forEach {
+                stickerPics.add(it.value)
+            }
+            stickerNames = nameRegex.find(stickerHtml)!!.groupValues[2]
+
+        }
+
+        showInspectIntent.putExtra("inspect", inspect)
+        showInspectIntent.putExtra("stickerPics",stickerPics)
+        showInspectIntent.putExtra("stickerNames",stickerNames)
         startActivity(showInspectIntent)
     }
 
@@ -106,6 +136,7 @@ class DetailInventoryFragment : Fragment(),CoroutineScope, InventoryAdapter.OnIt
     }
 
     private fun displayInvData(receivedInvData: InventoryData?) {
+
         if(receivedInvData?.success.equals("true")){
             adapter.addItems(receivedInvData!!)
             binding.btnLoad.visibility = View.GONE

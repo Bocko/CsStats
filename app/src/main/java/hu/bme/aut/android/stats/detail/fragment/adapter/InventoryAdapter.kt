@@ -39,7 +39,7 @@ class InventoryAdapter(private val listener: OnItemSelectedListener) : RecyclerV
 
         init {
             binding.root.setOnClickListener {
-                listener.onItemSelected(item?.decs!!)
+                listener.onItemSelected(item!!)
             }
         }
 
@@ -60,17 +60,18 @@ class InventoryAdapter(private val listener: OnItemSelectedListener) : RecyclerV
     }
 
     interface OnItemSelectedListener {
-        fun onItemSelected(decs: DescriptionItem)
+        fun onItemSelected(item: InventoryFullItem)
     }
 
     private fun setupInventory(inventoryData: InventoryData){
         val inv = inventoryData
-        var itemList: MutableList<InventoryFullItem?> = ArrayList()
+        val itemList: MutableList<InventoryFullItem?> = ArrayList()
         var inIt = false
 
         for(entry in inv.rgInventory!!) {
             val decs = "${entry.value.classid}_${entry.value.instanceid}"
             val item = InventoryFullItem()
+            item.id = entry.value.id
             item.amount = entry.value.amount
             item.decs = inv.rgDescriptions?.get(decs)
             if(itemList.size == 0){

@@ -7,7 +7,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.get
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import hu.bme.aut.android.stats.R
@@ -41,10 +44,32 @@ class InspectActivity : AppCompatActivity(),CoroutineScope {
         binding = ActivityInspectBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var intent = intent
-        var mhName = intent.getStringExtra("name")
-        var icon = intent.getStringExtra("icon")
-        var color = intent.getStringExtra("color")
+        val intent = intent
+        val mhName = intent.getStringExtra("name")
+        val icon = intent.getStringExtra("icon")
+        val color = intent.getStringExtra("color")
+        var inspect = intent.getStringExtra("inspect")
+        val stickerPics = intent.getStringArrayListExtra("stickerPics")
+        val stickerNames = intent.getStringExtra("stickerNames")
+        val stickerNamesSplit = stickerNames?.split(", ")
+
+        if(stickerPics == null){
+            binding.llStickers.visibility = View.GONE
+        } else{
+            for (i in 0 until 4){
+                if (i < stickerPics.size){
+                    Glide.with(binding.root)
+                            .load(stickerPics.get(i))
+                            .transition(DrawableTransitionOptions().crossFade())
+                            .into(intToImageView(i))
+                    intToTextView(i).text = stickerNamesSplit?.get(i)
+                }else{
+                    intToImageView(i).visibility = View.GONE
+                    intToTextView(i).visibility = View.GONE
+                }
+            }
+        }
+
         loadItemData(mhName!!)
 
         binding.llBg.setBackgroundColor(Color.parseColor("#${color}"))
@@ -91,6 +116,25 @@ class InspectActivity : AppCompatActivity(),CoroutineScope {
             binding.tvLP.visibility = View.GONE
             binding.tvVolume.visibility = View.GONE
         }
+    }
 
+    private fun intToImageView(i:Int): ImageView{
+        when(i){
+            0 -> return binding.ivSticker1
+            1 -> return binding.ivSticker2
+            2 -> return binding.ivSticker3
+            3 -> return binding.ivSticker4
+        }
+        return binding.ivSticker4
+    }
+
+    private fun intToTextView(i:Int): TextView{
+        when(i){
+            0 -> return binding.tvSticker1
+            1 -> return binding.tvSticker2
+            2 -> return binding.tvSticker3
+            3 -> return binding.tvSticker4
+        }
+        return binding.tvSticker4
     }
 }

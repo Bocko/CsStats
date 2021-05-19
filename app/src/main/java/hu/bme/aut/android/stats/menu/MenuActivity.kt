@@ -36,6 +36,7 @@ class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener, 
         setContentView(binding.root)
 
         binding.toolbar.title = "Current Player Count: "
+
         loadPlayerCountData()
         initFab()
         initRecyclerView()
