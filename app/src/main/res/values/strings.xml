@@ -65,4 +65,10 @@
     <string name="number_of_units_on_market">Number Of Units On Market:</string>
     <string name="not_found">NOT FOUND</string>
     <string name="sticker">sticker</string>
+    <string name="floatValue">Float:</string>
+    <string name="paint_seed">Paint Seed:</string>
+    <string name="origin">Origin Of The Item:</string>
+    <string name="float_range">Possible Float Range:</string>
+    <string name="market">MARKET:</string>
+    <string name="item">ITEM:</string>
 </resources>

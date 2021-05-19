@@ -125,19 +125,28 @@
                 android:layout_marginTop="20dp">
 
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"
+                    android:text="@string/market"
+                    android:gravity="center"/>
+
+                <TextView
                     android:id="@+id/tvLP"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
                     android:textSize="20sp"
-                    android:text="@string/lowest_price"/>
+                    android:layout_marginTop="15dp"
+                    android:text="@string/lowest_price"
+                    android:background="@color/lightgray"/>
                 <TextView
                     android:id="@+id/tvItemLP"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:layout_marginTop="5dp"/>
+                    android:textSize="20sp"/>
 
                 <TextView
                     android:id="@+id/tvMP"
@@ -146,14 +155,14 @@
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:layout_marginTop="10dp"
-                    android:text="@string/median_price"/>
+                    android:text="@string/median_price"
+                    android:background="@color/lightgray"/>
                 <TextView
                     android:id="@+id/tvItemMP"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:layout_marginTop="5dp"/>
+                    android:textSize="20sp"/>
 
                 <TextView
                     android:id="@+id/tvVolume"
@@ -162,16 +171,88 @@
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:layout_marginTop="10dp"
-                    android:text="@string/number_of_units_on_market"/>
+                    android:text="@string/number_of_units_on_market"
+                    android:background="@color/lightgray"/>
                 <TextView
                     android:id="@+id/tvItemVolume"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:layout_marginTop="5dp"/>
-            </LinearLayout>
+                    android:textSize="20sp"/>
 
+                <TextView
+                    android:id="@+id/tvitem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"
+                    android:text="@string/item"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/tvFloat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/floatValue"
+                    android:background="@color/lightgray"/>
+                <TextView
+                    android:id="@+id/tvItemFloat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:id="@+id/tvPaintSeed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/paint_seed"
+                    android:background="@color/lightgray"/>
+                <TextView
+                    android:id="@+id/tvItemPaintSeed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:id="@+id/tvOrigin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/origin"
+                    android:background="@color/lightgray"/>
+                <TextView
+                    android:id="@+id/tvItemOrigin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:id="@+id/tvFloatRange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/float_range"
+                    android:background="@color/lightgray"/>
+                <TextView
+                    android:id="@+id/tvItemFloatRange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"/>
+            </LinearLayout>
 
         </LinearLayout>
 

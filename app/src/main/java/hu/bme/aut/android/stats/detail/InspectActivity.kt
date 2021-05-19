@@ -74,7 +74,26 @@ class InspectActivity : AppCompatActivity(),CoroutineScope {
         loadItemData(mhName!!)
         if (inspect != null) {
             loadItemInfo(inspect)
+        } else {
+            binding.tvitem.visibility = View.GONE
+            binding.tvItemFloat.visibility = View.GONE
+            binding.tvFloat.visibility = View.GONE
+            binding.tvItemPaintSeed.visibility = View.GONE
+            binding.tvPaintSeed.visibility = View.GONE
+            binding.tvItemOrigin.visibility = View.GONE
+            binding.tvOrigin.visibility = View.GONE
+            binding.tvItemFloatRange.visibility = View.GONE
+            binding.tvFloatRange.visibility = View.GONE
         }
+
+        val finalColor = Color.parseColor("#${color}")
+        binding.tvLP.setBackgroundColor(finalColor)
+        binding.tvMP.setBackgroundColor(finalColor)
+        binding.tvVolume.setBackgroundColor(finalColor)
+        binding.tvFloat.setBackgroundColor(finalColor)
+        binding.tvPaintSeed.setBackgroundColor(finalColor)
+        binding.tvOrigin.setBackgroundColor(finalColor)
+        binding.tvFloatRange.setBackgroundColor(finalColor)
 
         binding.llBg.setBackgroundColor(Color.parseColor("#${color}"))
         binding.tvItemName.text = mhName
@@ -147,7 +166,7 @@ class InspectActivity : AppCompatActivity(),CoroutineScope {
 
             override fun onResponse(call: Call<ItemInfoData?>, response: Response<ItemInfoData?>) {
 
-                Log.d(TAG,"Item Price onResponse: " + response.code() + " - " + response.message())
+                Log.d(TAG,"Item Info onResponse: " + response.code() + " - " + response.message())
                 if (response.isSuccessful) {
                     displayItemInfo(response.body())
                 } else {
@@ -163,6 +182,9 @@ class InspectActivity : AppCompatActivity(),CoroutineScope {
     }
 
     private fun displayItemInfo(receivedItemInfo: ItemInfoData?) {
-        Log.d("item",receivedItemInfo?.iteminfo?.floatvalue.toString())
+        binding.tvItemFloat.text = receivedItemInfo?.iteminfo?.floatvalue.toString()
+        binding.tvItemPaintSeed.text = receivedItemInfo?.iteminfo?.paintseed.toString()
+        binding.tvItemOrigin.text = receivedItemInfo?.iteminfo?.origin_name.toString()
+        binding.tvItemFloatRange.text = "${receivedItemInfo?.iteminfo?.min} - ${receivedItemInfo?.iteminfo?.max}"
     }
 }
