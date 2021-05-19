@@ -16,6 +16,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import hu.bme.aut.android.stats.R
 import hu.bme.aut.android.stats.databinding.ActivityInspectBinding
 import hu.bme.aut.android.stats.model.ItemPrice.ItemPriceData
+import hu.bme.aut.android.stats.model.itemInfo.ItemInfoData
 import hu.bme.aut.android.stats.network.NetworkManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -55,7 +56,7 @@ class InspectActivity : AppCompatActivity(),CoroutineScope {
 
         if(stickerPics == null){
             binding.llStickers.visibility = View.GONE
-        } else{
+        } else {
             for (i in 0 until 4){
                 if (i < stickerPics.size){
                     Glide.with(binding.root)
@@ -63,7 +64,7 @@ class InspectActivity : AppCompatActivity(),CoroutineScope {
                             .transition(DrawableTransitionOptions().crossFade())
                             .into(intToImageView(i))
                     intToTextView(i).text = stickerNamesSplit?.get(i)
-                }else{
+                } else {
                     intToImageView(i).visibility = View.GONE
                     intToTextView(i).visibility = View.GONE
                 }
@@ -71,6 +72,9 @@ class InspectActivity : AppCompatActivity(),CoroutineScope {
         }
 
         loadItemData(mhName!!)
+        if (inspect != null) {
+            loadItemInfo(inspect)
+        }
 
         binding.llBg.setBackgroundColor(Color.parseColor("#${color}"))
         binding.tvItemName.text = mhName
@@ -136,5 +140,29 @@ class InspectActivity : AppCompatActivity(),CoroutineScope {
             3 -> return binding.tvSticker4
         }
         return binding.tvSticker4
+    }
+
+    private fun loadItemInfo(url: String) = launch{
+        NetworkManager.getItemInfo(url)!!.enqueue(object : Callback<ItemInfoData?> {
+
+            override fun onResponse(call: Call<ItemInfoData?>, response: Response<ItemInfoData?>) {
+
+                Log.d(TAG,"Item Price onResponse: " + response.code() + " - " + response.message())
+                if (response.isSuccessful) {
+                    displayItemInfo(response.body())
+                } else {
+                    Toast.makeText(binding.root.context,"Item Error: " + response.message(), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ItemInfoData?>, throwable: Throwable) {
+                throwable.printStackTrace()
+                Toast.makeText(binding.root.context,"Network request error occurred, check LOG", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun displayItemInfo(receivedItemInfo: ItemInfoData?) {
+        Log.d("item",receivedItemInfo?.iteminfo?.floatvalue.toString())
     }
 }
