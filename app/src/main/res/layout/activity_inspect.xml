@@ -140,7 +140,8 @@
                     android:textSize="20sp"
                     android:layout_marginTop="15dp"
                     android:text="@string/lowest_price"
-                    android:background="@color/lightgray"/>
+                    android:background="@color/lightgray"
+                    android:padding="2dp"/>
                 <TextView
                     android:id="@+id/tvItemLP"
                     android:layout_width="match_parent"
@@ -156,7 +157,8 @@
                     android:textSize="20sp"
                     android:layout_marginTop="10dp"
                     android:text="@string/median_price"
-                    android:background="@color/lightgray"/>
+                    android:background="@color/lightgray"
+                    android:padding="2dp"/>
                 <TextView
                     android:id="@+id/tvItemMP"
                     android:layout_width="match_parent"
@@ -172,7 +174,8 @@
                     android:textSize="20sp"
                     android:layout_marginTop="10dp"
                     android:text="@string/number_of_units_on_market"
-                    android:background="@color/lightgray"/>
+                    android:background="@color/lightgray"
+                    android:padding="2dp"/>
                 <TextView
                     android:id="@+id/tvItemVolume"
                     android:layout_width="match_parent"
@@ -197,7 +200,8 @@
                     android:textSize="20sp"
                     android:layout_marginTop="15dp"
                     android:text="@string/floatValue"
-                    android:background="@color/lightgray"/>
+                    android:background="@color/lightgray"
+                    android:padding="2dp"/>
                 <TextView
                     android:id="@+id/tvItemFloat"
                     android:layout_width="match_parent"
@@ -213,7 +217,8 @@
                     android:textSize="20sp"
                     android:layout_marginTop="10dp"
                     android:text="@string/paint_seed"
-                    android:background="@color/lightgray"/>
+                    android:background="@color/lightgray"
+                    android:padding="2dp"/>
                 <TextView
                     android:id="@+id/tvItemPaintSeed"
                     android:layout_width="match_parent"
@@ -229,7 +234,8 @@
                     android:textSize="20sp"
                     android:layout_marginTop="10dp"
                     android:text="@string/origin"
-                    android:background="@color/lightgray"/>
+                    android:background="@color/lightgray"
+                    android:padding="2dp"/>
                 <TextView
                     android:id="@+id/tvItemOrigin"
                     android:layout_width="match_parent"
@@ -245,7 +251,8 @@
                     android:textSize="20sp"
                     android:layout_marginTop="10dp"
                     android:text="@string/float_range"
-                    android:background="@color/lightgray"/>
+                    android:background="@color/lightgray"
+                    android:padding="2dp"/>
                 <TextView
                     android:id="@+id/tvItemFloatRange"
                     android:layout_width="match_parent"
