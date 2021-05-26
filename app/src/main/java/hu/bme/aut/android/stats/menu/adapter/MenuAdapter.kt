@@ -8,8 +8,8 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import hu.bme.aut.android.stats.data.PlayerItem
 import hu.bme.aut.android.stats.databinding.ItemPlayerBinding
-import hu.bme.aut.android.stats.detail.adapter.DetailPagerAdapter
 import hu.bme.aut.android.stats.model.profile.Player
 import hu.bme.aut.android.stats.model.profile.ProfileData
 import hu.bme.aut.android.stats.model.url.UrlData
@@ -22,7 +22,7 @@ import java.lang.Exception
 class MenuAdapter(private val listener: OnPlayerSelectedListener) : RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
 
     private val TAG = "DetailsActivity"
-    private var players: MutableList<Player?> = ArrayList()
+    private var players: MutableList<PlayerItem> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = MenuViewHolder(
             ItemPlayerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -32,11 +32,17 @@ class MenuAdapter(private val listener: OnPlayerSelectedListener) : RecyclerView
         val item = players[position]
         holder.bind(item)
         holder.binding.ibRemove.setOnClickListener {
-            listener.onPlayerDeleted(position)
+            listener.onPlayerDeleted(item)
         }
     }
 
     override fun getItemCount(): Int = players.size
+
+    fun update(player: List<PlayerItem>) {
+        players.clear()
+        players.addAll(player)
+        notifyDataSetChanged()
+    }
 
     fun addPlayer(IDorUrl: String,ctx: Context) {
         if(IDorUrl.isNotEmpty()){
@@ -48,41 +54,43 @@ class MenuAdapter(private val listener: OnPlayerSelectedListener) : RecyclerView
         }
     }
 
-    fun removePlayer(position: Int) {
-        players.removeAt(position)
-        notifyItemRemoved(position)
-        if (position < players.size) {
-            notifyItemRangeChanged(position, players.size - position)
+    fun removePlayer(player: PlayerItem) {
+        val pos = players.indexOf(player)
+        players.remove(player)
+        notifyItemRemoved(pos)
+        if (pos < players.size) {
+            notifyItemRangeChanged(pos, players.size - pos)
         }
     }
 
     inner class MenuViewHolder(val binding: ItemPlayerBinding) :
             RecyclerView.ViewHolder(binding.root) {
-        var item: Player? = null
+        var item: PlayerItem? = null
 
         init {
             binding.root.setOnClickListener {
-                listener.onPlayerSelected(item?.steamid)
+                listener.onPlayerSelected(item?.steam_id)
             }
         }
 
-        fun bind(newPlayer: Player?) {
+        fun bind(newPlayer: PlayerItem?) {
             item = newPlayer!!
-            binding.playerItemNameTextView.text = item?.personaname
+            binding.playerItemNameTextView.text = item?.persona_name
             Glide.with(binding.root)
-                    .load(item?.avatarfull)
+                    .load(item?.pic_url)
                     .transition(DrawableTransitionOptions().crossFade())
                     .into(binding.ivPlayerImg)
         }
     }
 
     interface OnPlayerSelectedListener {
+        fun onPlayerAdded(player: PlayerItem)
         fun onPlayerSelected(player: Long?)
-        fun onPlayerDeleted(position: Int)
+        fun onPlayerDeleted(player: PlayerItem)
     }
 
     private fun loadProfileData(playerIDorURL: String?,ctx: Context){
-        if(!players.any { p -> p?.steamid == playerIDorURL?.toLong() }) {
+        if(!players.any { p -> p.steam_id == playerIDorURL?.toLong() }) {
             NetworkManager.getProfile(playerIDorURL?.toLong())!!.enqueue(object : Callback<ProfileData?> {
 
                 override fun onResponse(call: Call<ProfileData?>, response: Response<ProfileData?>) {
@@ -105,7 +113,10 @@ class MenuAdapter(private val listener: OnPlayerSelectedListener) : RecyclerView
     }
 
     private fun displayProfileData(receivedProfileData: ProfileData?) {
-        players.add(receivedProfileData?.response?.players?.get(0))
+        val receivedPlayer = receivedProfileData?.response?.players?.get(0)!!
+        val p = PlayerItem(steam_id = receivedPlayer.steamid!!,persona_name = receivedPlayer.personaname!!,pic_url = receivedPlayer.avatarfull!!)
+        listener.onPlayerAdded(p)
+        players.add(p)
         notifyItemInserted(players.size - 1)
     }
 

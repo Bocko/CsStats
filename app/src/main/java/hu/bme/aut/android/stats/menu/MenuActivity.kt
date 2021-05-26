@@ -1,20 +1,25 @@
 package hu.bme.aut.android.stats.menu
 
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import hu.bme.aut.android.stats.data.PlayerDatabase
+import hu.bme.aut.android.stats.data.PlayerItem
 import hu.bme.aut.android.stats.databinding.ActivityMenuBinding
 import hu.bme.aut.android.stats.detail.DetailActivity
 import hu.bme.aut.android.stats.menu.adapter.MenuAdapter
 import hu.bme.aut.android.stats.model.playercount.CountData
+import hu.bme.aut.android.stats.model.profile.Player
 import hu.bme.aut.android.stats.network.NetworkManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,6 +32,7 @@ class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener, 
 
     lateinit var binding: ActivityMenuBinding
     lateinit var adapter: MenuAdapter
+    private lateinit var database: PlayerDatabase
 
     private var countData: CountData? = null
 
@@ -34,6 +40,8 @@ class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener, 
         super.onCreate(savedInstanceState)
         binding = ActivityMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        database = PlayerDatabase.getDatabase(applicationContext)
 
         binding.toolbar.title = "Current Player Count: "
 
@@ -63,8 +71,7 @@ class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener, 
     private fun initRecyclerView() {
         binding.rvMenu.layoutManager = LinearLayoutManager(this)
         adapter = MenuAdapter(this)
-        adapter.addPlayer("bockoofficial",this@MenuActivity)
-        adapter.addPlayer("everynameistaken",this@MenuActivity)
+        loadPlayersInBackground()
         binding.rvMenu.adapter = adapter
     }
 
@@ -75,8 +82,32 @@ class MenuActivity : AppCompatActivity(), MenuAdapter.OnPlayerSelectedListener, 
         startActivityForResult(showDetailIntent,1)
     }
 
-    override fun onPlayerDeleted(position: Int) {
-        adapter.removePlayer(position)
+    override fun onPlayerDeleted(player: PlayerItem) {
+        deletePlayerInBackground(player)
+        adapter.removePlayer(player)
+    }
+
+    private fun deletePlayerInBackground(player: PlayerItem) = launch {
+        withContext(Dispatchers.IO) {
+            database.shoppingItemDao().deleteItem(player)
+        }
+    }
+
+    override fun onPlayerAdded(player: PlayerItem) {
+        addPlayerInBackgound(player)
+    }
+
+    private fun addPlayerInBackgound(item: PlayerItem) = launch {
+        withContext(Dispatchers.IO) {
+            database.shoppingItemDao().insert(item)
+        }
+    }
+
+    private fun loadPlayersInBackground() = launch {
+        val items = withContext(Dispatchers.IO) {
+            database.shoppingItemDao().getAll()
+        }
+        adapter.update(items)
     }
 
     private fun loadPlayerCountData(){
