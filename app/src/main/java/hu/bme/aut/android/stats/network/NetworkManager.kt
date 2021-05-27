@@ -4,10 +4,13 @@ import com.google.gson.GsonBuilder
 import hu.bme.aut.android.stats.model.ItemPrice.ItemPriceData
 import hu.bme.aut.android.stats.model.ban.BanData
 import hu.bme.aut.android.stats.model.friends.FriendlistData
+import hu.bme.aut.android.stats.model.games.GamesData
+import hu.bme.aut.android.stats.model.games.RecentlyData
 import hu.bme.aut.android.stats.model.inventory.InventoryData
 import hu.bme.aut.android.stats.model.itemInfo.ItemInfoData
 import hu.bme.aut.android.stats.model.playercount.CountData
 import hu.bme.aut.android.stats.model.profile.ProfileData
+import hu.bme.aut.android.stats.model.profile.level.LevelData
 import hu.bme.aut.android.stats.model.stats.PlayerStatsData
 import hu.bme.aut.android.stats.model.url.UrlData
 import okhttp3.OkHttpClient
@@ -90,5 +93,17 @@ object NetworkManager {
 
     fun getItemInfo(url: String?): Call<ItemInfoData?>?{
         return ItemInfoApi.getItemInfo(url)
+    }
+
+    fun getSteamLevel(key: String?,steamid: Long?): Call<LevelData?>?{
+        return STEAM_WEB_API.getSteamLevel(key,steamid)
+    }
+
+    fun getRecentlyGames(key: String?,steamid: Long?): Call<RecentlyData?>?{
+        return STEAM_WEB_API.getRecentlyGames(key,steamid)
+    }
+
+    fun getAllGames(key: String?,steamid: Long?): Call<GamesData?>?{
+        return STEAM_WEB_API.getAllGames(key,steamid,true,true)
     }
 }

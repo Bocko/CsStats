@@ -2,8 +2,11 @@ package hu.bme.aut.android.stats.network
 
 import hu.bme.aut.android.stats.model.ban.BanData
 import hu.bme.aut.android.stats.model.friends.FriendlistData
+import hu.bme.aut.android.stats.model.games.GamesData
+import hu.bme.aut.android.stats.model.games.RecentlyData
 import hu.bme.aut.android.stats.model.playercount.CountData
 import hu.bme.aut.android.stats.model.profile.ProfileData
+import hu.bme.aut.android.stats.model.profile.level.LevelData
 import hu.bme.aut.android.stats.model.stats.PlayerStatsData
 import hu.bme.aut.android.stats.model.url.UrlData
 import retrofit2.Call
@@ -52,4 +55,24 @@ interface SteamWebApi {
             @Query("key") key: String?,
             @Query("steamids") steamids: Long?
     ): Call<BanData?>?
+
+    @GET("/IPlayerService/GetSteamLevel/v1/")
+    fun getSteamLevel(
+            @Query("key") key: String?,
+            @Query("steamid") steamid: Long?
+    ): Call<LevelData?>?
+
+    @GET("/IPlayerService/GetRecentlyPlayedGames/v1/")
+    fun getRecentlyGames(
+            @Query("key") key: String?,
+            @Query("steamid") steamid: Long?
+    ): Call<RecentlyData?>?
+
+    @GET("/IPlayerService/GetOwnedGames/v1/")
+    fun getAllGames(
+            @Query("key") key: String?,
+            @Query("steamid") steamid: Long?,
+            @Query("include_played_free_games") freeGames: Boolean?,
+            @Query("include_appinfo") appinfo: Boolean?
+    ): Call<GamesData?>?
 }
