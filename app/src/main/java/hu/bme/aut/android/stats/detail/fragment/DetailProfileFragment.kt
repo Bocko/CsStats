@@ -2,24 +2,41 @@ package hu.bme.aut.android.stats.detail.fragment
 
 import android.graphics.Color
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import hu.bme.aut.android.stats.R
 import hu.bme.aut.android.stats.databinding.FragmentDetailProfileBinding
 import hu.bme.aut.android.stats.detail.PlayerDataHolder
+import hu.bme.aut.android.stats.detail.fragment.adapter.RecentlyAdapter
+import hu.bme.aut.android.stats.model.games.RecentlyData
 import hu.bme.aut.android.stats.model.profile.Player
-import hu.bme.aut.android.stats.model.profile.ProfileData
+import hu.bme.aut.android.stats.network.NetworkManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import kotlin.coroutines.CoroutineContext
 
-class DetailProfileFragment: Fragment() {
+class DetailProfileFragment: Fragment(),CoroutineScope {
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
+
+    private val TAG = "ProfileFragment"
 
     private var _binding: FragmentDetailProfileBinding? = null
     private val binding get() = _binding!!
+
+    lateinit var adapter: RecentlyAdapter
 
     private var playerDataHolder: PlayerDataHolder? = null
 
@@ -34,18 +51,22 @@ class DetailProfileFragment: Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View {
         _binding = FragmentDetailProfileBinding.inflate(LayoutInflater.from(context))
+        initRecyclerView()
         return binding.root
+    }
+
+    private fun initRecyclerView() {
+        binding.rvRecently.layoutManager = LinearLayoutManager(binding.rvRecently.context)
+        adapter = RecentlyAdapter()
+        binding.rvRecently.adapter = adapter
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (playerDataHolder!!.getBanData() != null) {
+        if (playerDataHolder!!.getBanData() != null){
             displayProfileData()
         }
     }
@@ -70,6 +91,7 @@ class DetailProfileFragment: Fragment() {
                 .transition(DrawableTransitionOptions().crossFade())
                 .into(binding.ivPlayerImg)
         setBans()
+        loadRecentlyData()
     }
 
     private fun setState(profile: Player?){
@@ -140,5 +162,34 @@ class DetailProfileFragment: Fragment() {
         binding.tvPlayerNumVacBan.text = bans.NumberOfVACBans.toString()
         binding.tvPlayerVacBanDays.text = bans.DaysSinceLastBan.toString()
         binding.tvPlayerNumBan.text = bans.NumberOfGameBans.toString()
+    }
+
+    private fun loadRecentlyData() = launch{
+        NetworkManager.getRecentlyGames(playerDataHolder?.getProfileData()?.response?.players?.get(0)?.steamid)!!.enqueue(object : Callback<RecentlyData?> {
+
+            override fun onResponse(call: Call<RecentlyData?>, response: Response<RecentlyData?>) {
+
+                Log.d(TAG, "Recently onResponse: " + response.code())
+                if (response.isSuccessful) {
+                    sendRecently(response.body())
+                } else {
+                    Toast.makeText(binding.root.context,"Recently Error:" + response.message(), Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<RecentlyData?>, throwable: Throwable) {
+                throwable.printStackTrace()
+                Toast.makeText(binding.root.context,"Network request error occurred, check LOG", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun sendRecently(receivedRecently: RecentlyData?){
+        if(receivedRecently?.response?.games.isNullOrEmpty()){
+            binding.rvRecently.visibility = View.GONE
+            binding.tvRecently.visibility = View.GONE
+        }else{
+            adapter.addItems(receivedRecently!!)
+        }
     }
 }

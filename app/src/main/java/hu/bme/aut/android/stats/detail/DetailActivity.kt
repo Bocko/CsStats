@@ -11,7 +11,6 @@ import hu.bme.aut.android.stats.databinding.ActivityDetailBinding
 import hu.bme.aut.android.stats.detail.adapter.DetailPagerAdapter
 import hu.bme.aut.android.stats.model.ban.BanData
 import hu.bme.aut.android.stats.model.friends.FriendlistData
-import hu.bme.aut.android.stats.model.games.GamesData
 import hu.bme.aut.android.stats.model.games.RecentlyData
 import hu.bme.aut.android.stats.model.profile.ProfileData
 import hu.bme.aut.android.stats.model.profile.level.LevelData
@@ -45,7 +44,6 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
     private var banData: BanData? = null
     private var levelData: LevelData? = null
     private var recentlyData: RecentlyData? = null
-    private var gamesData: GamesData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,12 +52,13 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
 
         playerID = intent.getStringExtra(PLAYER_NAME)?.toLong()
 
-        loadProfileData()
-        loadLevelData()
-        loadBanData()
-        loadFriendlistData()
-        loadStatsData()
-        loadRecentlyData()
+        runBlocking {
+            loadProfileData()
+            loadLevelData()
+            loadBanData()
+            loadFriendlistData()
+            loadStatsData()
+        }
 
         val detailPagerAdapter = DetailPagerAdapter(this)
         binding.mainViewPager.adapter = detailPagerAdapter
@@ -89,8 +88,6 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
     override fun getFriendlistData(): FriendlistData? = friendlistData
     override fun getBanData(): BanData? = banData
     override fun getLevelData(): LevelData? = levelData
-    override fun getRecentlyData(): RecentlyData? = recentlyData
-    override fun getGamesData(): GamesData? = gamesData
 
 
     private fun loadStatsData() = launch{
@@ -100,7 +97,7 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
 
                 Log.d(TAG, "stats onResponse: " + response.code())
                 if (response.isSuccessful) {
-                    statsData = response.body()
+                    displayStatsData(response.body())
                 } else {
                     if(response.code() != 500){
                         Toast.makeText(this@DetailActivity,"Stats Error: " + response.message(),Toast.LENGTH_SHORT).show()
@@ -115,13 +112,21 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
         })
     }
 
+    private fun displayStatsData(receivedStatData: PlayerStatsData?) {
+
+        statsData = receivedStatData
+
+        val detailPagerAdapter = DetailPagerAdapter(this)
+        binding.mainViewPager.adapter = detailPagerAdapter
+    }
+
     private fun loadProfileData() = launch{
         NetworkManager.getProfile(playerID)!!.enqueue(object : Callback<ProfileData?> {
 
             override fun onResponse( call: Call<ProfileData?>, response: Response<ProfileData?>) {
                 Log.d(TAG, "profile onResponse: " + response.code())
                 if (response.isSuccessful) {
-                    profileData = response.body()
+                    displayProfileData(response.body())
                 } else {
                     Toast.makeText(this@DetailActivity, "Profile Error: " + response.message(), Toast.LENGTH_SHORT).show()
                 }
@@ -134,6 +139,13 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
         })
     }
 
+    private fun displayProfileData(receivedProfileData: ProfileData?) {
+        profileData = receivedProfileData
+
+        val detailPagerAdapter = DetailPagerAdapter(this)
+        binding.mainViewPager.adapter = detailPagerAdapter
+    }
+
     private fun loadFriendlistData() = launch{
         NetworkManager.getFriends(playerID)!!.enqueue(object : Callback<FriendlistData?> {
 
@@ -141,7 +153,7 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
 
                 Log.d(TAG, "Friends onResponse: " + response.code())
                 if (response.isSuccessful) {
-                    friendlistData = response.body()
+                    displayFriendsData(response.body())
                 } else {
                     if(response.code() != 401){
                         Toast.makeText(this@DetailActivity,response.message(),Toast.LENGTH_SHORT).show()
@@ -154,6 +166,13 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
                 Toast.makeText(this@DetailActivity,"Network request error occurred, check LOG",Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun displayFriendsData(receivedFriendData: FriendlistData?) {
+        friendlistData = receivedFriendData
+
+        val detailPagerAdapter = DetailPagerAdapter(this)
+        binding.mainViewPager.adapter = detailPagerAdapter
     }
 
     private fun loadBanData() = launch{
@@ -183,27 +202,34 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
         binding.mainViewPager.adapter = detailPagerAdapter
     }
 
-    private fun loadRecentlyData() = launch{
-        NetworkManager.getRecentlyGames(playerID)!!.enqueue(object : Callback<RecentlyData?> {
+    private fun loadLevelData() = launch{
+        NetworkManager.getSteamLevel(playerID)!!.enqueue(object : Callback<LevelData?> {
 
-            override fun onResponse(call: Call<RecentlyData?>,response: Response<RecentlyData?>) {
+            override fun onResponse(call: Call<LevelData?>,response: Response<LevelData?>) {
 
-                Log.d(TAG, "Recently onResponse: " + response.code())
+                Log.d(TAG, "Level onResponse: " + response.code())
                 if (response.isSuccessful) {
-                    recentlyData = response.body()
+                    displayLevelData(response.body())
                 } else {
-                    Toast.makeText(this@DetailActivity,"Ban Error:" + response.message(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@DetailActivity,"Games Error:" + response.message(),Toast.LENGTH_SHORT).show()
                 }
             }
 
-            override fun onFailure(call: Call<RecentlyData?>,throwable: Throwable) {
+            override fun onFailure(call: Call<LevelData?>,throwable: Throwable) {
                 throwable.printStackTrace()
                 Toast.makeText(this@DetailActivity,"Network request error occurred, check LOG",Toast.LENGTH_SHORT).show()
             }
         })
     }
-/*
-    private fun loadGamesData() = launch{
+
+    private fun displayLevelData(receivedLevelData: LevelData?){
+        levelData = receivedLevelData
+
+        val detailPagerAdapter = DetailPagerAdapter(this)
+        binding.mainViewPager.adapter = detailPagerAdapter
+    }
+
+    /*    private fun loadGamesData() = launch{
         NetworkManager.getAllGames(playerID)!!.enqueue(object : Callback<GamesData?> {
 
             override fun onResponse(call: Call<GamesData?>,response: Response<GamesData?>) {
@@ -222,24 +248,4 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
             }
         })
     }*/
-
-    private fun loadLevelData() = launch{
-        NetworkManager.getSteamLevel(playerID)!!.enqueue(object : Callback<LevelData?> {
-
-            override fun onResponse(call: Call<LevelData?>,response: Response<LevelData?>) {
-
-                Log.d(TAG, "Level onResponse: " + response.code())
-                if (response.isSuccessful) {
-                    levelData = response.body()
-                } else {
-                    Toast.makeText(this@DetailActivity,"Games Error:" + response.message(),Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<LevelData?>,throwable: Throwable) {
-                throwable.printStackTrace()
-                Toast.makeText(this@DetailActivity,"Network request error occurred, check LOG",Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
 }

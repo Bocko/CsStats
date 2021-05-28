@@ -15,6 +15,4 @@ interface PlayerDataHolder {
     fun getFriendlistData(): FriendlistData?
     fun getBanData(): BanData?
     fun getLevelData(): LevelData?
-    fun getRecentlyData(): RecentlyData?
-    fun getGamesData(): GamesData?
 }
