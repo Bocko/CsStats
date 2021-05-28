@@ -70,6 +70,24 @@
             android:layout_marginStart="5dp"/>
 
         <TextView
+            android:id="@+id/tvProfileLevel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/level"
+            android:textSize="20sp"
+            android:background="@color/middlegray"
+            android:padding="5dp"/>
+        <TextView
+            android:id="@+id/tvPlayerProfileLevel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:linksClickable="true"
+            android:autoLink="web"
+            android:layout_marginBottom="15dp"
+            android:layout_marginStart="5dp"/>
+
+        <TextView
             android:id="@+id/tvCommProfileState"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

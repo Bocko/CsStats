@@ -71,4 +71,6 @@
     <string name="float_range">Possible Float Range:</string>
     <string name="market">MARKET:</string>
     <string name="item">ITEM:</string>
+    <string name="level">Profile Level:</string>
+    <string name="privateTag">Private</string>
 </resources>

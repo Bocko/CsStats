@@ -30,7 +30,7 @@ object NetworkManager {
     private const val SERVICE_URL = "https://api.steampowered.com"
     private const val INVENTORY_URL = "https://steamcommunity.com"
     private const val ITEM_INFO_URL = "https://api.csgofloat.com"
-    private const val KEY = "686EAC68C74B3321C6FB3FF28F0B994D"
+    private const val KEY = "C1207E72D0424364AE7457A57D6B29D6"//686EAC68C74B3321C6FB3FF28F0B994D
 
     init {
         retrofit = Retrofit.Builder()
@@ -95,15 +95,15 @@ object NetworkManager {
         return ItemInfoApi.getItemInfo(url)
     }
 
-    fun getSteamLevel(key: String?,steamid: Long?): Call<LevelData?>?{
-        return STEAM_WEB_API.getSteamLevel(key,steamid)
+    fun getSteamLevel(steamid: Long?): Call<LevelData?>?{
+        return STEAM_WEB_API.getSteamLevel(KEY,steamid)
     }
 
-    fun getRecentlyGames(key: String?,steamid: Long?): Call<RecentlyData?>?{
-        return STEAM_WEB_API.getRecentlyGames(key,steamid)
+    fun getRecentlyGames(steamid: Long?): Call<RecentlyData?>?{
+        return STEAM_WEB_API.getRecentlyGames(KEY,steamid)
     }
 
-    fun getAllGames(key: String?,steamid: Long?): Call<GamesData?>?{
-        return STEAM_WEB_API.getAllGames(key,steamid,true,true)
+    fun getAllGames(steamid: Long?): Call<GamesData?>?{
+        return STEAM_WEB_API.getAllGames(KEY,steamid,true,true)
     }
 }

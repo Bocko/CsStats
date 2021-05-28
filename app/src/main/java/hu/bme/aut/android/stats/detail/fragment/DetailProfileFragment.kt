@@ -56,13 +56,20 @@ class DetailProfileFragment: Fragment() {
         binding.tvPlayerName.text = profile?.personaname
         binding.tvPlayerID.text = profile?.steamid.toString()
         binding.tvPlayerProfileLink.text = profile?.profileurl
+        val level = playerDataHolder?.getLevelData()?.response?.player_level.toString()
+        if (level.equals("null")){
+            binding.tvPlayerProfileLevel.text = getString(R.string.privateTag)
+        } else {
+            binding.tvPlayerProfileLevel.text = level
+        }
+
         setVis(profile)
         setState(profile)
-        setBans()
         Glide.with(this)
-            .load(profile?.avatarfull)
-            .transition(DrawableTransitionOptions().crossFade())
-            .into(binding.ivPlayerImg)
+                .load(profile?.avatarfull)
+                .transition(DrawableTransitionOptions().crossFade())
+                .into(binding.ivPlayerImg)
+        setBans()
     }
 
     private fun setState(profile: Player?){
@@ -92,12 +99,14 @@ class DetailProfileFragment: Fragment() {
     private fun setVis(profile: Player?){
 
         binding.tvPlayerCommProfileState.text = when(profile?.communityvisibilitystate){
-            1 -> "Private / Friends Only"
+            1 -> "Private"
+            2 -> "Friends Only"
             3 -> "Public"
             else -> ""
         }
         val color: Int = when(profile?.communityvisibilitystate){
             1 -> Color.RED
+            2 -> Color.rgb(255,69,0)
             else -> Color.GREEN
         }
         binding.tvPlayerCommProfileState.setTextColor(color)
@@ -113,7 +122,7 @@ class DetailProfileFragment: Fragment() {
             binding.tvPlayerCommBan.text = getString(R.string.bannedNone)
             binding.tvPlayerCommBan.setTextColor(Color.GREEN)
         }
-        if(bans?.VACBanned!!){
+        if(bans.VACBanned!!){
             binding.tvPlayerVacBan.text = getString(R.string.banned)
             binding.tvPlayerVacBan.setTextColor(Color.RED)
         }else{
