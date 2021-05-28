@@ -42,8 +42,6 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
     private var statsData: PlayerStatsData? = null
     private var friendlistData: FriendlistData? = null
     private var banData: BanData? = null
-    private var levelData: LevelData? = null
-    private var recentlyData: RecentlyData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +52,6 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
 
         runBlocking {
             loadProfileData()
-            loadLevelData()
             loadBanData()
             loadFriendlistData()
             loadStatsData()
@@ -87,8 +84,6 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
     override fun getStatsData(): PlayerStatsData? = statsData
     override fun getFriendlistData(): FriendlistData? = friendlistData
     override fun getBanData(): BanData? = banData
-    override fun getLevelData(): LevelData? = levelData
-
 
     private fun loadStatsData() = launch{
         NetworkManager.getStats(playerID)!!.enqueue(object : Callback<PlayerStatsData?> {
@@ -197,33 +192,6 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
 
     private fun displayBanData(receivedBanData: BanData?) {
         banData = receivedBanData
-
-        val detailPagerAdapter = DetailPagerAdapter(this)
-        binding.mainViewPager.adapter = detailPagerAdapter
-    }
-
-    private fun loadLevelData() = launch{
-        NetworkManager.getSteamLevel(playerID)!!.enqueue(object : Callback<LevelData?> {
-
-            override fun onResponse(call: Call<LevelData?>,response: Response<LevelData?>) {
-
-                Log.d(TAG, "Level onResponse: " + response.code())
-                if (response.isSuccessful) {
-                    displayLevelData(response.body())
-                } else {
-                    Toast.makeText(this@DetailActivity,"Games Error:" + response.message(),Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<LevelData?>,throwable: Throwable) {
-                throwable.printStackTrace()
-                Toast.makeText(this@DetailActivity,"Network request error occurred, check LOG",Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-    private fun displayLevelData(receivedLevelData: LevelData?){
-        levelData = receivedLevelData
 
         val detailPagerAdapter = DetailPagerAdapter(this)
         binding.mainViewPager.adapter = detailPagerAdapter

@@ -13,10 +13,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import hu.bme.aut.android.stats.R
 import hu.bme.aut.android.stats.databinding.FragmentDetailProfileBinding
+import hu.bme.aut.android.stats.detail.DetailActivity
 import hu.bme.aut.android.stats.detail.PlayerDataHolder
+import hu.bme.aut.android.stats.detail.adapter.DetailPagerAdapter
 import hu.bme.aut.android.stats.detail.fragment.adapter.RecentlyAdapter
 import hu.bme.aut.android.stats.model.games.RecentlyData
 import hu.bme.aut.android.stats.model.profile.Player
+import hu.bme.aut.android.stats.model.profile.level.LevelData
 import hu.bme.aut.android.stats.network.NetworkManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -77,12 +80,6 @@ class DetailProfileFragment: Fragment(),CoroutineScope {
         binding.tvPlayerName.text = profile?.personaname
         binding.tvPlayerID.text = profile?.steamid.toString()
         binding.tvPlayerProfileLink.text = profile?.profileurl
-        val level = playerDataHolder?.getLevelData()?.response?.player_level.toString()
-        if (level.equals("null")){
-            binding.tvPlayerProfileLevel.text = getString(R.string.privateTag)
-        } else {
-            binding.tvPlayerProfileLevel.text = level
-        }
 
         setVis(profile)
         setState(profile)
@@ -91,6 +88,7 @@ class DetailProfileFragment: Fragment(),CoroutineScope {
                 .transition(DrawableTransitionOptions().crossFade())
                 .into(binding.ivPlayerImg)
         setBans()
+        loadLevelData()
         loadRecentlyData()
     }
 
@@ -190,6 +188,35 @@ class DetailProfileFragment: Fragment(),CoroutineScope {
             binding.tvRecently.visibility = View.GONE
         }else{
             adapter.addItems(receivedRecently!!)
+        }
+    }
+
+    private fun loadLevelData() = launch{
+        NetworkManager.getSteamLevel(playerDataHolder?.getProfileData()?.response?.players?.get(0)?.steamid)!!.enqueue(object : Callback<LevelData?> {
+
+            override fun onResponse(call: Call<LevelData?>, response: Response<LevelData?>) {
+
+                Log.d(TAG, "Level onResponse: " + response.code())
+                if (response.isSuccessful) {
+                    displayLevelData(response.body())
+                } else {
+                    Toast.makeText(binding.root.context,"Games Error:" + response.message(),Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<LevelData?>, throwable: Throwable) {
+                throwable.printStackTrace()
+                Toast.makeText(binding.root.context,"Network request error occurred, check LOG",Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun displayLevelData(receivedLevelData: LevelData?){
+        val level = receivedLevelData?.response?.player_level.toString()
+        if (level.equals("null")){
+            binding.tvPlayerProfileLevel.text = getString(R.string.privateTag)
+        } else {
+            binding.tvPlayerProfileLevel.text = level
         }
     }
 }
