@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import hu.bme.aut.android.stats.data.PlayerItem
 import hu.bme.aut.android.stats.databinding.ItemPlayerBinding
-import hu.bme.aut.android.stats.model.profile.Player
 import hu.bme.aut.android.stats.model.profile.ProfileData
 import hu.bme.aut.android.stats.model.url.UrlData
 import hu.bme.aut.android.stats.network.NetworkManager

@@ -32,8 +32,6 @@ class InspectActivity : AppCompatActivity(),CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
-    private var playerDataHolder: PlayerDataHolder? = null
-
     private val imgURL = "https://steamcommunity-a.akamaihd.net/economy/image/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +55,7 @@ class InspectActivity : AppCompatActivity(),CoroutineScope {
             for (i in 0 until 4){
                 if (i < stickerPics.size){
                     Glide.with(binding.root)
-                            .load(stickerPics.get(i))
+                            .load(stickerPics[i])
                             .transition(DrawableTransitionOptions().crossFade())
                             .into(intToImageView(i))
                     intToTextView(i).text = stickerNamesSplit?.get(i)
@@ -182,6 +180,6 @@ class InspectActivity : AppCompatActivity(),CoroutineScope {
         binding.tvItemFloat.text = receivedItemInfo?.iteminfo?.floatvalue.toString()
         binding.tvItemPaintSeed.text = receivedItemInfo?.iteminfo?.paintseed.toString()
         binding.tvItemOrigin.text = receivedItemInfo?.iteminfo?.origin_name.toString()
-        binding.tvItemFloatRange.text = "${receivedItemInfo?.iteminfo?.min} - ${receivedItemInfo?.iteminfo?.max}"
+        binding.tvItemFloatRange.text = binding.root.context.resources.getString(R.string.floatRange,receivedItemInfo?.iteminfo?.min.toString(),receivedItemInfo?.iteminfo?.max.toString())
     }
 }

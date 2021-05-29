@@ -76,6 +76,10 @@
     <string name="playtime">Play Time:</string>
     <string name="gameName">Game name</string>
     <string name="recently_played_games">Recently Played Games</string>
-    <string name="nulltwoweeks">0 hr in last 2 weeks</string>
+    <string name="foreverhours">%s hrs on record</string>
+    <string name="twoweekshours">%s hrs in last 2 weeks</string>
     <string name="view_whole_library">View Whole Library</string>
+    <string name="amountx">Amount: %s</string>
+    <string name="playingx">Playing: %s</string>
+    <string name="floatRange">%s - %s</string>
 </resources>

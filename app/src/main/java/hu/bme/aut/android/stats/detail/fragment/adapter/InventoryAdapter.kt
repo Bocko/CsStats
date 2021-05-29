@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import hu.bme.aut.android.stats.R
 import hu.bme.aut.android.stats.databinding.ItemInventoryBinding
 import hu.bme.aut.android.stats.model.inventory.DescriptionItem
 import hu.bme.aut.android.stats.model.inventory.InventoryData
@@ -46,7 +47,7 @@ class InventoryAdapter(private val listener: OnItemSelectedListener) : RecyclerV
         fun bind(newItem: InventoryFullItem?) {
             item = newItem!!
             binding.tvItemName.text = item?.decs?.market_name
-            binding.tvItemAmount.text = "Amount: ${item?.amount}"
+            binding.tvItemAmount.text = binding.root.context.resources.getString(R.string.amountx,item?.amount)
             item?.decs?.tags?.forEach {
                 if (!it.color.isNullOrEmpty()){
                     binding.llBorder.setBackgroundColor(Color.parseColor("#${it.color}"))

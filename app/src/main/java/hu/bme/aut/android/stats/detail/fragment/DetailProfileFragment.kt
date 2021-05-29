@@ -119,7 +119,7 @@ class DetailProfileFragment: Fragment(),CoroutineScope {
             binding.llBorder.setBackgroundColor(color)
         } else {
 
-            binding.tvPlayerState.text = "Playing: " + profile.gameextrainfo
+            binding.tvPlayerState.text = getString(R.string.playingx, profile.gameextrainfo)
             binding.tvPlayerState.setTextColor(Color.rgb(144,200,60))
             binding.llBorder.setBackgroundColor(Color.rgb(144,200,60))
         }

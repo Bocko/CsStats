@@ -1,7 +1,6 @@
 package hu.bme.aut.android.stats.menu
 
 import android.content.ContentValues.TAG
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -14,7 +13,6 @@ import hu.bme.aut.android.stats.databinding.ActivityMenuBinding
 import hu.bme.aut.android.stats.detail.DetailActivity
 import hu.bme.aut.android.stats.menu.adapter.MenuAdapter
 import hu.bme.aut.android.stats.model.playercount.CountData
-import hu.bme.aut.android.stats.model.profile.Player
 import hu.bme.aut.android.stats.network.NetworkManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

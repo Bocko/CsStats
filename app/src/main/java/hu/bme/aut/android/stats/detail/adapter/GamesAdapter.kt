@@ -40,12 +40,12 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GamesViewHolder>(){
             item = newItem!!
             binding.tvGameName.text = item?.name
             val forever = "%.2f".format(item?.playtime_forever!!.toDouble()/60)
-            binding.tvPlayTimeForever.text = "${forever} hrs on record"
+            binding.tvPlayTimeForever.text = binding.root.context.resources.getString(R.string.foreverhours,forever)
             if(item?.playtime_2weeks != null) {
                 val weeks = "%.2f".format(item?.playtime_2weeks!!.toDouble() / 60)
-                binding.tvPlayTime2week.text = "${weeks} hrs in past 2 weeks"
+                binding.tvPlayTime2week.text = binding.root.context.resources.getString(R.string.twoweekshours,weeks)
             }else{
-                binding.tvPlayTime2week.text = binding.root.context.resources.getString(R.string.nulltwoweeks)
+                binding.tvPlayTime2week.text = binding.root.context.resources.getString(R.string.twoweekshours,"0")
             }
             Glide.with(binding.root)
                 .load("${imgURL}${item?.appid}/${item?.img_logo_url}.jpg")
