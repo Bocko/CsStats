@@ -121,6 +121,34 @@
             android:layout_marginBottom="15dp"
             android:layout_marginStart="5dp"/>
 
+
+        <TextView
+            android:id="@+id/tvRecently"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:text="@string/recently_played_games"
+            android:layout_marginBottom="15dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRecently"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:listitem="@layout/item_game"
+            android:background="@color/darkgrey"
+            android:layout_marginBottom="15dp"/>
+
+        <Button
+            android:id="@+id/btnGames"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:text="@string/view_whole_library"
+            android:layout_marginBottom="15dp"/>
+
         <TextView
             android:id="@+id/tvCommBan"
             android:layout_width="match_parent"
@@ -216,24 +244,6 @@
             android:textSize="20sp"
             android:layout_marginBottom="15dp"
             android:layout_marginStart="5dp"/>
-
-        <TextView
-            android:id="@+id/tvRecently"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="30sp"
-            android:text="@string/recently_played_games"
-            android:layout_marginBottom="15dp"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvRecently"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:listitem="@layout/item_game"
-            android:background="@color/darkgrey"
-            android:layout_marginBottom="15dp"/>
 
     </LinearLayout>
 </ScrollView>

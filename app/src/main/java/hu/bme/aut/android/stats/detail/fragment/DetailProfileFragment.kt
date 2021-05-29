@@ -1,5 +1,6 @@
 package hu.bme.aut.android.stats.detail.fragment
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -13,9 +14,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import hu.bme.aut.android.stats.R
 import hu.bme.aut.android.stats.databinding.FragmentDetailProfileBinding
-import hu.bme.aut.android.stats.detail.DetailActivity
+import hu.bme.aut.android.stats.detail.GamesActivity
 import hu.bme.aut.android.stats.detail.PlayerDataHolder
-import hu.bme.aut.android.stats.detail.adapter.DetailPagerAdapter
 import hu.bme.aut.android.stats.detail.fragment.adapter.RecentlyAdapter
 import hu.bme.aut.android.stats.model.games.RecentlyData
 import hu.bme.aut.android.stats.model.profile.Player
@@ -42,6 +42,7 @@ class DetailProfileFragment: Fragment(),CoroutineScope {
     lateinit var adapter: RecentlyAdapter
 
     private var playerDataHolder: PlayerDataHolder? = null
+    private var steamID:Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +50,7 @@ class DetailProfileFragment: Fragment(),CoroutineScope {
             activity as PlayerDataHolder?
         } else {
             throw RuntimeException(
-                "Activity must implement WeatherDataHolder interface!"
+                "Activity must implement PlayerDataHolder interface!"
             )
         }
     }
@@ -72,6 +73,13 @@ class DetailProfileFragment: Fragment(),CoroutineScope {
         if (playerDataHolder!!.getBanData() != null){
             displayProfileData()
         }
+
+        binding.btnGames.setOnClickListener {
+            val showLibraryIntent = Intent()
+            showLibraryIntent.setClass(binding.root.context, GamesActivity::class.java)
+            showLibraryIntent.putExtra("steamID", steamID.toString())
+            startActivity(showLibraryIntent)
+        }
     }
 
     private fun displayProfileData() {
@@ -88,6 +96,7 @@ class DetailProfileFragment: Fragment(),CoroutineScope {
                 .transition(DrawableTransitionOptions().crossFade())
                 .into(binding.ivPlayerImg)
         setBans()
+        steamID = playerDataHolder?.getProfileData()?.response?.players?.get(0)?.steamid
         loadLevelData()
         loadRecentlyData()
     }
@@ -163,7 +172,7 @@ class DetailProfileFragment: Fragment(),CoroutineScope {
     }
 
     private fun loadRecentlyData() = launch{
-        NetworkManager.getRecentlyGames(playerDataHolder?.getProfileData()?.response?.players?.get(0)?.steamid)!!.enqueue(object : Callback<RecentlyData?> {
+        NetworkManager.getRecentlyGames(steamID)!!.enqueue(object : Callback<RecentlyData?> {
 
             override fun onResponse(call: Call<RecentlyData?>, response: Response<RecentlyData?>) {
 
@@ -186,13 +195,14 @@ class DetailProfileFragment: Fragment(),CoroutineScope {
         if(receivedRecently?.response?.games.isNullOrEmpty()){
             binding.rvRecently.visibility = View.GONE
             binding.tvRecently.visibility = View.GONE
+            binding.btnGames.visibility = View.GONE
         }else{
             adapter.addItems(receivedRecently!!)
         }
     }
 
     private fun loadLevelData() = launch{
-        NetworkManager.getSteamLevel(playerDataHolder?.getProfileData()?.response?.players?.get(0)?.steamid)!!.enqueue(object : Callback<LevelData?> {
+        NetworkManager.getSteamLevel(steamID)!!.enqueue(object : Callback<LevelData?> {
 
             override fun onResponse(call: Call<LevelData?>, response: Response<LevelData?>) {
 
@@ -200,7 +210,7 @@ class DetailProfileFragment: Fragment(),CoroutineScope {
                 if (response.isSuccessful) {
                     displayLevelData(response.body())
                 } else {
-                    Toast.makeText(binding.root.context,"Games Error:" + response.message(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(binding.root.context,"Level Error:" + response.message(),Toast.LENGTH_SHORT).show()
                 }
             }
 

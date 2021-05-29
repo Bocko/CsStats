@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/statsdone"
         android:supportsRtl="true"
         android:theme="@style/Theme.Stats">
-        <activity android:name=".detail.InspectActivity"></activity>
+        <activity android:name=".detail.GamesActivity" />
+        <activity android:name=".detail.InspectActivity" />
         <activity android:name=".menu.AddPlayerActivity" />
         <activity android:name=".detail.DetailActivity" />
         <activity android:name=".menu.MenuActivity">

@@ -196,24 +196,4 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
         val detailPagerAdapter = DetailPagerAdapter(this)
         binding.mainViewPager.adapter = detailPagerAdapter
     }
-
-    /*    private fun loadGamesData() = launch{
-        NetworkManager.getAllGames(playerID)!!.enqueue(object : Callback<GamesData?> {
-
-            override fun onResponse(call: Call<GamesData?>,response: Response<GamesData?>) {
-
-                Log.d(TAG, "Games onResponse: " + response.code())
-                if (response.isSuccessful) {
-                    gamesData = response.body()
-                } else {
-                    Toast.makeText(this@DetailActivity,"Games Error:" + response.message(),Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<GamesData?>,throwable: Throwable) {
-                throwable.printStackTrace()
-                Toast.makeText(this@DetailActivity,"Network request error occurred, check LOG",Toast.LENGTH_SHORT).show()
-            }
-        })
-    }*/
 }

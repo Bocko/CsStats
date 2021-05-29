@@ -1,6 +1,5 @@
 package hu.bme.aut.android.stats.detail
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,7 +9,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.view.get
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import hu.bme.aut.android.stats.R
@@ -21,7 +19,6 @@ import hu.bme.aut.android.stats.network.NetworkManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -49,7 +46,7 @@ class InspectActivity : AppCompatActivity(),CoroutineScope {
         val mhName = intent.getStringExtra("name")
         val icon = intent.getStringExtra("icon")
         val color = intent.getStringExtra("color")
-        var inspect = intent.getStringExtra("inspect")
+        val inspect = intent.getStringExtra("inspect")
         val stickerPics = intent.getStringArrayListExtra("stickerPics")
         val stickerNames = intent.getStringExtra("stickerNames")
         val stickerNamesSplit = stickerNames?.split(", ")

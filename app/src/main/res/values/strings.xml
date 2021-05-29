@@ -76,4 +76,6 @@
     <string name="playtime">Play Time:</string>
     <string name="gameName">Game name</string>
     <string name="recently_played_games">Recently Played Games</string>
+    <string name="nulltwoweeks">0 hr in last 2 weeks</string>
+    <string name="view_whole_library">View Whole Library</string>
 </resources>
