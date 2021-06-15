@@ -35,8 +35,7 @@
                 android:contentDescription="@string/profilepic" />
 
         </LinearLayout>
-
-
+        
         <TextView
             android:id="@+id/tvID"
             android:layout_width="match_parent"
@@ -134,7 +133,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvRecently"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/item_game"
             android:background="@color/darkgrey"
