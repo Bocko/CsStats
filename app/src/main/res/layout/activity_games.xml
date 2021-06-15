@@ -9,6 +9,27 @@
     android:orientation="vertical"
     android:background="@color/darkgrey">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/sort"/>
+
+        <Spinner
+            android:id="@+id/SSort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:popupBackground="@color/middlegray"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvGames"
         android:layout_width="match_parent"

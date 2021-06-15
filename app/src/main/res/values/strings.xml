@@ -82,4 +82,11 @@
     <string name="amountx">Amount: %s</string>
     <string name="playingx">Playing: %s</string>
     <string name="floatRange">%s - %s</string>
+    <string name="sort">Sort:</string>
+    <string-array name="gamesSortArray">
+        <item>Name Asc</item>
+        <item>Name Desc</item>
+        <item>Total Play Time Asc</item>
+        <item>Total Play Time Desc</item>
+    </string-array>
 </resources>

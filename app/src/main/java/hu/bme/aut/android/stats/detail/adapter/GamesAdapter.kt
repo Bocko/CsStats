@@ -53,4 +53,30 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GamesViewHolder>(){
                 .into(binding.ivGameImg)
         }
     }
+
+    fun Name(desc: Boolean){
+        val comparator = Comparator { g1: GameItem, g2: GameItem ->
+            if (desc) {
+                return@Comparator g1.name?.compareTo(g2.name!!)!!
+            }
+            else{
+                return@Comparator g2.name?.compareTo(g1.name!!)!!
+            }
+        }
+        games = games.sortedWith(comparator).toMutableList()
+        notifyDataSetChanged()
+    }
+
+    fun Time(desc: Boolean){
+        val comparator = Comparator { g1: GameItem, g2: GameItem ->
+            if (desc) {
+                return@Comparator g1.playtime_forever?.toInt()!! - g2.playtime_forever?.toInt()!!
+            }
+            else{
+                return@Comparator g2.playtime_forever?.toInt()!! - g1.playtime_forever?.toInt()!!
+            }
+        }
+        games = games.sortedWith(comparator).toMutableList()
+        notifyDataSetChanged()
+    }
 }
