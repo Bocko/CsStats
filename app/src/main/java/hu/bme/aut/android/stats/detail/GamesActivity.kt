@@ -2,11 +2,14 @@ package hu.bme.aut.android.stats.detail
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import hu.bme.aut.android.stats.R
 import hu.bme.aut.android.stats.databinding.ActivityGamesBinding
@@ -43,6 +46,15 @@ class GamesActivity : AppCompatActivity(),CoroutineScope,AdapterView.OnItemSelec
         initSpinner()
         loadGamesData()
         binding.SSort.onItemSelectedListener = this
+
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                adapter.search(s.toString())
+            }
+        })
     }
 
     private fun initRecyclerView() {
@@ -59,7 +71,7 @@ class GamesActivity : AppCompatActivity(),CoroutineScope,AdapterView.OnItemSelec
                 Log.d(TAG, "Games onResponse: " + response.code())
                 if (response.isSuccessful) {
                     adapter.addItems(response.body()!!)
-                    adapter.Name(true)
+                    adapter.name(true)
                 } else {
                     Toast.makeText(this@GamesActivity,"Games Error:" + response.message(),Toast.LENGTH_SHORT).show()
                 }
@@ -81,10 +93,10 @@ class GamesActivity : AppCompatActivity(),CoroutineScope,AdapterView.OnItemSelec
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
         when(pos){
-            0 -> adapter.Name(true)
-            1 -> adapter.Name(false)
-            2 -> adapter.Time(true)
-            3 -> adapter.Time(false)
+            0 -> adapter.name(true)
+            1 -> adapter.name(false)
+            2 -> adapter.time(true)
+            3 -> adapter.time(false)
         }
     }
 

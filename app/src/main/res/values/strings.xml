@@ -83,6 +83,7 @@
     <string name="playingx">Playing: %s</string>
     <string name="floatRange">%s - %s</string>
     <string name="sort">Sort:</string>
+    <string name="search">Search</string>
     <string-array name="gamesSortArray">
         <item>Name Asc</item>
         <item>Name Desc</item>

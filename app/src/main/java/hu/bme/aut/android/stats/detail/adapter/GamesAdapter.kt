@@ -15,6 +15,7 @@ import hu.bme.aut.android.stats.model.games.GamesData
 class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GamesViewHolder>(){
 
     private var games: MutableList<GameItem?> = ArrayList()
+    private var gamesAll: MutableList<GameItem?> = ArrayList()
     private val imgURL = "https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = GamesViewHolder(
@@ -29,7 +30,8 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GamesViewHolder>(){
     override fun getItemCount(): Int = games.size
 
     fun addItems(gamesData: GamesData) {
-        games = gamesData.response?.games!!.toMutableList()
+        gamesAll = gamesData.response?.games!!.toMutableList()
+        games = gamesAll
         notifyDataSetChanged()
     }
 
@@ -54,7 +56,7 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GamesViewHolder>(){
         }
     }
 
-    fun Name(desc: Boolean){
+    fun name(desc: Boolean){
         val comparator = Comparator { g1: GameItem, g2: GameItem ->
             if (desc) {
                 return@Comparator g1.name?.compareTo(g2.name!!)!!
@@ -64,10 +66,11 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GamesViewHolder>(){
             }
         }
         games = games.sortedWith(comparator).toMutableList()
+        gamesAll = gamesAll.sortedWith(comparator).toMutableList()
         notifyDataSetChanged()
     }
 
-    fun Time(desc: Boolean){
+    fun time(desc: Boolean){
         val comparator = Comparator { g1: GameItem, g2: GameItem ->
             if (desc) {
                 return@Comparator g1.playtime_forever?.toInt()!! - g2.playtime_forever?.toInt()!!
@@ -77,6 +80,22 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GamesViewHolder>(){
             }
         }
         games = games.sortedWith(comparator).toMutableList()
+        gamesAll = gamesAll.sortedWith(comparator).toMutableList()
         notifyDataSetChanged()
+    }
+
+    fun search(searchText: String){
+        if (searchText.isEmpty()){
+            games = gamesAll
+            notifyDataSetChanged()
+        } else {
+            games.clear()
+            gamesAll.forEach {
+                if (it?.name!!.contains(searchText,ignoreCase = true)){
+                    games.add(it)
+                }
+            }
+            notifyDataSetChanged()
+        }
     }
 }
