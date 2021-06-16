@@ -9,6 +9,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import hu.bme.aut.android.stats.databinding.ItemFriendBinding
 import hu.bme.aut.android.stats.databinding.ItemPlayerBinding
 import hu.bme.aut.android.stats.menu.adapter.MenuAdapter
+import hu.bme.aut.android.stats.model.games.GameItem
 import hu.bme.aut.android.stats.model.profile.Player
 import hu.bme.aut.android.stats.model.profile.ProfileData
 import hu.bme.aut.android.stats.model.url.UrlData
@@ -82,12 +83,20 @@ class FriendAdapter (private val listener: OnFriendSelectedListener) : RecyclerV
     }
 
     private fun displayProfileData(receivedFriendsData: ProfileData?) {
-        friends = friendSort(receivedFriendsData?.response?.players!!.toMutableList())
+        friends = friendSort(receivedFriendsData?.response?.players!!.toMutableList(),true)
         notifyDataSetChanged()
     }
 
-    private fun friendSort(friend: MutableList<Player?>): MutableList<Player?>{
-       return friend.sortedWith(compareByDescending { it?.personaname }).reversed().toMutableList()
+    private fun friendSort(friend: MutableList<Player?>,desc:Boolean): MutableList<Player?>{
+        val comparator = Comparator { g1: Player, g2: Player ->
+            if (desc) {
+                return@Comparator g1.personaname?.compareTo(g2.personaname!!,ignoreCase = true)!!
+            }
+            else{
+                return@Comparator g2.personaname?.compareTo(g1.personaname!!,ignoreCase = true)!!
+            }
+        }
+       return friend.sortedWith(comparator).toMutableList()
     }
 
 }
