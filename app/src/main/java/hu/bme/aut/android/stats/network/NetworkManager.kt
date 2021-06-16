@@ -100,7 +100,7 @@ object NetworkManager {
     }
 
     fun getRecentlyGames(steamid: Long?): Call<RecentlyData?>?{
-        return STEAM_WEB_API.getRecentlyGames(KEY,steamid)
+        return STEAM_WEB_API.getRecentlyGames(KEY,steamid,5)
     }
 
     fun getAllGames(steamid: Long?): Call<GamesData?>?{

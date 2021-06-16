@@ -65,7 +65,8 @@ interface SteamWebApi {
     @GET("/IPlayerService/GetRecentlyPlayedGames/v1/")
     fun getRecentlyGames(
             @Query("key") key: String?,
-            @Query("steamid") steamid: Long?
+            @Query("steamid") steamid: Long?,
+            @Query("count") count: Int?
     ): Call<RecentlyData?>?
 
     @GET("/IPlayerService/GetOwnedGames/v1/")
