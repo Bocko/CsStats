@@ -100,7 +100,5 @@ class GamesActivity : AppCompatActivity(),CoroutineScope,AdapterView.OnItemSelec
         }
     }
 
-    override fun onNothingSelected(parent: AdapterView<*>) {
-        Log.d("games", "nothing")
-    }
+    override fun onNothingSelected(parent: AdapterView<*>) {}
 }

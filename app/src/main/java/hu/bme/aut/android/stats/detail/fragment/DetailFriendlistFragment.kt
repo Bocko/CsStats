@@ -2,19 +2,24 @@ package hu.bme.aut.android.stats.detail.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import hu.bme.aut.android.stats.R
 import hu.bme.aut.android.stats.databinding.FragmentDetailFriendlistBinding
 import hu.bme.aut.android.stats.databinding.FragmentDetailProfileBinding
 import hu.bme.aut.android.stats.detail.PlayerDataHolder
 import hu.bme.aut.android.stats.detail.fragment.adapter.FriendAdapter
 import hu.bme.aut.android.stats.menu.adapter.MenuAdapter
 
-class DetailFriendlistFragment : Fragment(),FriendAdapter.OnFriendSelectedListener {
+class DetailFriendlistFragment : Fragment(),FriendAdapter.OnFriendSelectedListener,AdapterView.OnItemSelectedListener {
 
     private var _binding: FragmentDetailFriendlistBinding? = null
     private val binding get() = _binding!!
@@ -37,6 +42,19 @@ class DetailFriendlistFragment : Fragment(),FriendAdapter.OnFriendSelectedListen
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View {
         _binding = FragmentDetailFriendlistBinding.inflate(LayoutInflater.from(context))
         initRecyclerView()
+        initSpinner()
+        binding.SSort.onItemSelectedListener = this
+
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                Log.d("friend","text: " + s.toString())
+                adapter.search(s.toString())
+            }
+        })
+
         return binding.root
     }
 
@@ -62,4 +80,20 @@ class DetailFriendlistFragment : Fragment(),FriendAdapter.OnFriendSelectedListen
         activity?.setResult(1,id)
         activity?.finish()
     }
+
+    private fun initSpinner(){
+        ArrayAdapter.createFromResource(this.context!!, R.array.friendsSortArray, android.R.layout.simple_spinner_item).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.SSort.adapter = adapter
+        }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+        when(pos){
+            0 -> adapter.name(true)
+            1 -> adapter.name(false)
+        }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>) {}
 }

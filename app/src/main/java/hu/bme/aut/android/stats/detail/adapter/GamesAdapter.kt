@@ -86,7 +86,8 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GamesViewHolder>(){
 
     fun search(searchText: String){
         if (searchText.isEmpty()){
-            games = gamesAll
+            games.clear()
+            games.addAll(gamesAll)
             notifyDataSetChanged()
         } else {
             games.clear()
