@@ -69,7 +69,7 @@ class DetailFriendlistFragment : Fragment(),FriendAdapter.OnFriendSelectedListen
             adapter.addFriend(IDs)
         }else{
             binding.tvInfo.visibility = View.VISIBLE
-            binding.rvFriends.visibility = View.GONE
+            binding.llFriends.visibility = View.GONE
         }
         binding.rvFriends.adapter = adapter
     }
