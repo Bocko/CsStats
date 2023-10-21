@@ -13,30 +13,30 @@
         android:id="@+id/tvInfo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:text="@string/private_friends"
         android:textSize="30sp"
-        android:gravity="center"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/llFriends"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <EditText
             android:id="@+id/etSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:textColorHint="@color/lightgray"
-            android:backgroundTint="@color/lightgray"
-            android:textColor="@color/white"
             android:autofillHints="search"
-            android:textSize="20sp"
+            android:backgroundTint="@color/lightgray"
             android:hint="@string/search"
-            android:imeOptions="actionDone"/>
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:textColor="@color/white"
+            android:textColorHint="@color/lightgray"
+            android:textSize="20sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,16 +47,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="@string/sort"/>
+                android:text="@string/sort"
+                android:textSize="20sp" />
 
             <Spinner
                 android:id="@+id/SSort"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:popupBackground="@color/middlegray"
                 android:layout_gravity="bottom"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:popupBackground="@color/middlegray" />
         </LinearLayout>
 
 
@@ -64,9 +64,9 @@
             android:id="@+id/rvFriends"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/darkgrey"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:listitem="@layout/item_friend"
-            android:background="@color/darkgrey"/>
+            tools:listitem="@layout/item_friend" />
 
     </LinearLayout>
 
