@@ -1,6 +1,5 @@
 package hu.bme.aut.android.stats.detail.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +15,7 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GamesViewHolder>(){
 
     private var games: MutableList<GameItem?> = ArrayList()
     private var gamesAll: MutableList<GameItem?> = ArrayList()
-    private val imgURL = "https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/"
+    private val imgURL = "https://cdn.cloudflare.steamstatic.com/steam/apps/"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = GamesViewHolder(
         ItemGameBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -32,7 +31,7 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GamesViewHolder>(){
     fun addItems(gamesData: GamesData) {
         gamesAll = gamesData.response?.games!!.toMutableList()
         games = gamesAll
-        notifyDataSetChanged()
+        notifyItemRangeInserted(0, games.size)
     }
 
     inner class GamesViewHolder(val binding: ItemGameBinding): RecyclerView.ViewHolder(binding.root) {
@@ -50,7 +49,7 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GamesViewHolder>(){
                 binding.tvPlayTime2week.text = binding.root.context.resources.getString(R.string.twoweekshours,"0")
             }
             Glide.with(binding.root)
-                .load("${imgURL}${item?.appid}/${item?.img_logo_url}.jpg")
+                .load("${imgURL}${item?.appid}/header.jpg")
                 .transition(DrawableTransitionOptions().crossFade())
                 .into(binding.ivGameImg)
         }
@@ -67,7 +66,7 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GamesViewHolder>(){
         }
         games = games.sortedWith(comparator).toMutableList()
         gamesAll = gamesAll.sortedWith(comparator).toMutableList()
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, games.size)
     }
 
     fun time(desc: Boolean){
@@ -81,7 +80,7 @@ class GamesAdapter : RecyclerView.Adapter<GamesAdapter.GamesViewHolder>(){
         }
         games = games.sortedWith(comparator).toMutableList()
         gamesAll = gamesAll.sortedWith(comparator).toMutableList()
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, games.size)
     }
 
     fun search(searchText: String){

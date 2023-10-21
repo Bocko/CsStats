@@ -8,13 +8,12 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import hu.bme.aut.android.stats.R
 import hu.bme.aut.android.stats.databinding.ItemGameBinding
 import hu.bme.aut.android.stats.model.games.GameItem
-import hu.bme.aut.android.stats.model.games.GamesData
 import hu.bme.aut.android.stats.model.games.RecentlyData
 
 class RecentlyAdapter: RecyclerView.Adapter<RecentlyAdapter.RecentlyViewHolder>(){
 
     private var games: MutableList<GameItem?> = ArrayList()
-    private val imgURL = "https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/"
+    private val imgURL = "https://cdn.cloudflare.steamstatic.com/steam/apps/"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = RecentlyViewHolder(
             ItemGameBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -29,7 +28,7 @@ class RecentlyAdapter: RecyclerView.Adapter<RecentlyAdapter.RecentlyViewHolder>(
 
     fun addItems(gamesData: RecentlyData) {
         games = gamesData.response?.games!!.toMutableList()
-        notifyDataSetChanged()
+        notifyItemRangeInserted(0, gamesData.response?.games!!.size)
     }
 
     inner class RecentlyViewHolder(val binding: ItemGameBinding): RecyclerView.ViewHolder(binding.root) {
@@ -43,7 +42,7 @@ class RecentlyAdapter: RecyclerView.Adapter<RecentlyAdapter.RecentlyViewHolder>(
             binding.tvPlayTimeForever.text = binding.root.context.resources.getString(R.string.foreverhours,forever)
             binding.tvPlayTime2week.text = binding.root.context.resources.getString(R.string.twoweekshours,weeks)
             Glide.with(binding.root)
-                    .load("${imgURL}${item?.appid}/${item?.img_logo_url}.jpg")
+                    .load("${imgURL}${item?.appid}/header.jpg")
                     .transition(DrawableTransitionOptions().crossFade())
                     .into(binding.ivGameImg)
         }
