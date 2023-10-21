@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import hu.bme.aut.android.stats.R
 import hu.bme.aut.android.stats.databinding.FragmentDetailFriendlistBinding
-import hu.bme.aut.android.stats.databinding.FragmentDetailProfileBinding
 import hu.bme.aut.android.stats.detail.PlayerDataHolder
 import hu.bme.aut.android.stats.detail.fragment.adapter.FriendAdapter
-import hu.bme.aut.android.stats.menu.adapter.MenuAdapter
 
 class DetailFriendlistFragment : Fragment(),FriendAdapter.OnFriendSelectedListener,AdapterView.OnItemSelectedListener {
 
@@ -50,7 +47,6 @@ class DetailFriendlistFragment : Fragment(),FriendAdapter.OnFriendSelectedListen
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                Log.d("friend","text: " + s.toString())
                 adapter.search(s.toString())
             }
         })
@@ -82,7 +78,7 @@ class DetailFriendlistFragment : Fragment(),FriendAdapter.OnFriendSelectedListen
     }
 
     private fun initSpinner(){
-        ArrayAdapter.createFromResource(this.context!!, R.array.friendsSortArray, android.R.layout.simple_spinner_item).also { adapter ->
+        ArrayAdapter.createFromResource(this.requireContext(), R.array.friendsSortArray, android.R.layout.simple_spinner_item).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.SSort.adapter = adapter
         }

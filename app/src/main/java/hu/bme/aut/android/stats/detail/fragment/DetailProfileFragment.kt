@@ -83,20 +83,20 @@ class DetailProfileFragment: Fragment(),CoroutineScope {
     }
 
     private fun displayProfileData() {
-        val profile = playerDataHolder?.getProfileData()?.response?.players?.get(0)
+        val profile = playerDataHolder?.getProfileData()?.response?.players?.get(0) ?: return
 
-        binding.tvPlayerName.text = profile?.personaname
-        binding.tvPlayerID.text = profile?.steamid.toString()
-        binding.tvPlayerProfileLink.text = profile?.profileurl
+        binding.tvPlayerName.text = profile.personaname
+        binding.tvPlayerID.text = profile.steamid.toString()
+        binding.tvPlayerProfileLink.text = profile.profileurl
+        steamID = profile.steamid
 
         setVis(profile)
         setState(profile)
         Glide.with(this)
-                .load(profile?.avatarfull)
+                .load(profile.avatarfull)
                 .transition(DrawableTransitionOptions().crossFade())
                 .into(binding.ivPlayerImg)
         setBans()
-        steamID = playerDataHolder?.getProfileData()?.response?.players?.get(0)?.steamid
         loadLevelData()
         loadRecentlyData()
     }
@@ -181,6 +181,7 @@ class DetailProfileFragment: Fragment(),CoroutineScope {
                     sendRecently(response.body())
                 } else {
                     Toast.makeText(binding.root.context,"Recently Error:" + response.message(), Toast.LENGTH_SHORT).show()
+                    Log.d(TAG, response.message())
                 }
             }
 

@@ -2,14 +2,18 @@ package hu.bme.aut.android.stats.detail.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import hu.bme.aut.android.stats.R
 import hu.bme.aut.android.stats.databinding.FragmentDetailInventoryBinding
 import hu.bme.aut.android.stats.detail.InspectActivity
 import hu.bme.aut.android.stats.detail.PlayerDataHolder
@@ -26,7 +30,7 @@ import retrofit2.Response
 import kotlin.coroutines.CoroutineContext
 
 
-class DetailInventoryFragment : Fragment(),CoroutineScope, InventoryAdapter.OnItemSelectedListener{
+class DetailInventoryFragment : Fragment(),CoroutineScope, InventoryAdapter.OnItemSelectedListener, AdapterView.OnItemSelectedListener{
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
@@ -57,6 +61,20 @@ class DetailInventoryFragment : Fragment(),CoroutineScope, InventoryAdapter.OnIt
         binding.btnLoad.setOnClickListener {
             loadInvData(playerDataHolder?.getProfileData()?.response?.players?.get(0)?.steamid!!)
         }
+
+        initSpinner()
+        binding.SSort.onItemSelectedListener = this
+
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                Log.d("inventory","text: " + s.toString())
+                //adapter.search(s.toString())
+            }
+        })
+
         return binding.root
     }
 
@@ -68,7 +86,7 @@ class DetailInventoryFragment : Fragment(),CoroutineScope, InventoryAdapter.OnIt
     }
 
     override fun onItemSelected(item: InventoryFullItem) {
-        val picRegex = "https://([\\w_-]+(?:(?:\\.[\\w_-]+)+))([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?".toRegex()
+        val picRegex = "https://([\\w_-]+(?:\\.[\\w_-]+)+)([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?".toRegex()
         val nameRegex = "(Sticker|Patch): (.*)</center>".toRegex()
         val showInspectIntent = Intent()
         showInspectIntent.setClass(binding.root.context,InspectActivity::class.java)
@@ -140,10 +158,27 @@ class DetailInventoryFragment : Fragment(),CoroutineScope, InventoryAdapter.OnIt
         if(receivedInvData?.success.equals("true")){
             adapter.addItems(receivedInvData!!)
             binding.btnLoad.visibility = View.GONE
-            binding.rvInventory.visibility = View.VISIBLE
+            binding.llInventory.visibility = View.VISIBLE
         } else {
             binding.btnLoad.visibility = View.GONE
             binding.tvInfo.visibility = View.VISIBLE
         }
     }
+
+    private fun initSpinner(){
+        ArrayAdapter.createFromResource(this.requireContext(), R.array.inventorySortArray, android.R.layout.simple_spinner_item).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.SSort.adapter = adapter
+        }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+        Log.d("inv",pos.toString())
+        /*when(pos){
+            0 -> adapter.name(true)
+            1 -> adapter.name(false)
+        }*/
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>) {}
 }

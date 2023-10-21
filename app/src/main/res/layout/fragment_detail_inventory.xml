@@ -24,13 +24,57 @@
         android:gravity="center"
         android:visibility="gone"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvInventory"
+    <LinearLayout
+        android:id="@+id/llInventory"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:listitem="@layout/item_inventory"
-        android:background="@color/darkgrey"
-        android:visibility="gone"/>
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textColorHint="@color/lightgray"
+            android:backgroundTint="@color/lightgray"
+            android:textColor="@color/white"
+            android:autofillHints="search"
+            android:textSize="20sp"
+            android:hint="@string/search"
+            android:imeOptions="actionDone"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="@string/sort"/>
+
+            <Spinner
+                android:id="@+id/SSort"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:popupBackground="@color/middlegray"
+                android:layout_gravity="bottom"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvInventory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:listitem="@layout/item_inventory"
+            android:background="@color/darkgrey"/>
+
+    </LinearLayout>
+
+
 
 </LinearLayout>

@@ -84,6 +84,7 @@
     <string name="floatRange">%s - %s</string>
     <string name="sort">Sort:</string>
     <string name="search">Search</string>
+    <string name="profile_add_button">ProfileAddButton</string>
     <string-array name="gamesSortArray">
         <item>Name Asc</item>
         <item>Name Desc</item>
@@ -91,6 +92,12 @@
         <item>Total Play Time Desc</item>
     </string-array>
     <string-array name="friendsSortArray">
+        <item>Name Asc</item>
+        <item>Name Desc</item>
+    </string-array>
+    <string-array name="inventorySortArray">
+        <item>Rarity Asc</item>
+        <item>Rarity Desc</item>
         <item>Name Asc</item>
         <item>Name Desc</item>
     </string-array>
