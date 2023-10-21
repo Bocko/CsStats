@@ -11,9 +11,7 @@ import hu.bme.aut.android.stats.databinding.ActivityDetailBinding
 import hu.bme.aut.android.stats.detail.adapter.DetailPagerAdapter
 import hu.bme.aut.android.stats.model.ban.BanData
 import hu.bme.aut.android.stats.model.friends.FriendlistData
-import hu.bme.aut.android.stats.model.games.RecentlyData
 import hu.bme.aut.android.stats.model.profile.ProfileData
-import hu.bme.aut.android.stats.model.profile.level.LevelData
 import hu.bme.aut.android.stats.model.stats.PlayerStatsData
 import hu.bme.aut.android.stats.network.NetworkManager
 import kotlinx.coroutines.CoroutineScope
@@ -94,7 +92,8 @@ class DetailActivity : AppCompatActivity(),PlayerDataHolder, CoroutineScope {
                 if (response.isSuccessful) {
                     displayStatsData(response.body())
                 } else {
-                    if(response.code() != 500){
+                    //500 -> the server shit it self, 403 probably private
+                    if(response.code() != 500 && response.code() != 403){
                         Toast.makeText(this@DetailActivity,"Stats Error: " + response.message(),Toast.LENGTH_SHORT).show()
                     }
                 }
