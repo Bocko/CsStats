@@ -71,7 +71,7 @@ class DetailInventoryFragment : Fragment(),CoroutineScope, InventoryAdapter.OnIt
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 Log.d("inventory","text: " + s.toString())
-                //adapter.search(s.toString())
+                adapter.search(s.toString())
             }
         })
 
@@ -90,24 +90,24 @@ class DetailInventoryFragment : Fragment(),CoroutineScope, InventoryAdapter.OnIt
         val nameRegex = "(Sticker|Patch): (.*)</center>".toRegex()
         val showInspectIntent = Intent()
         showInspectIntent.setClass(binding.root.context,InspectActivity::class.java)
-        showInspectIntent.putExtra("icon", item.decs?.icon_url)
-        showInspectIntent.putExtra("name",item.decs?.market_hash_name)
+        showInspectIntent.putExtra("icon", item.desc?.icon_url)
+        showInspectIntent.putExtra("name",item.desc?.market_hash_name)
         var color = ""
-        item.decs?.tags?.forEach {
+        item.desc?.tags?.forEach {
             if (it.color != null){
                 color = it.color!!
             }
         }
         showInspectIntent.putExtra("color",color)
 
-        var inspect = item.decs?.actions?.get(0)?.link
+        var inspect = item.desc?.actions?.get(0)?.link
         if (inspect != null){
             inspect = inspect.replace("%owner_steamid%",playerDataHolder?.getProfileData()?.response?.players?.get(0)?.steamid.toString())
-            inspect = inspect.replace("%assetid%", item.id.toString())
+            inspect = inspect.replace("%assetid%", item.assetid.toString())
         }
 
         var stickerHtml = ""
-        item.decs?.descriptions?.forEach {
+        item.desc?.descriptions?.forEach {
             if (it.value!!.contains("sticker_info")){
                 stickerHtml = it.value!!
             }
@@ -138,7 +138,10 @@ class DetailInventoryFragment : Fragment(),CoroutineScope, InventoryAdapter.OnIt
                 if (response.isSuccessful) {
                     displayInvData(response.body())
                 } else {
-                    if(response.code() == 429){
+                    //instead of returning 200 and with success set to false, now it returns 403 (forbidden) and null in the body when the players inventory is private
+                    if(response.code() == 403){
+                        displayInvData(null)
+                    }else if(response.code() == 429){
                         Toast.makeText(binding.root.context,"Too Many Requests! Please Wait a bit!", Toast.LENGTH_SHORT).show()
                     }else{
                         Toast.makeText(binding.root.context,"Inventory Error: " + response.message(), Toast.LENGTH_SHORT).show()
@@ -154,9 +157,8 @@ class DetailInventoryFragment : Fragment(),CoroutineScope, InventoryAdapter.OnIt
     }
 
     private fun displayInvData(receivedInvData: InventoryData?) {
-
-        if(receivedInvData?.success.equals("true")){
-            adapter.addItems(receivedInvData!!)
+        if(receivedInvData != null && receivedInvData.success == 1){
+            adapter.addItems(receivedInvData)
             binding.btnLoad.visibility = View.GONE
             binding.llInventory.visibility = View.VISIBLE
         } else {
@@ -173,11 +175,13 @@ class DetailInventoryFragment : Fragment(),CoroutineScope, InventoryAdapter.OnIt
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-        Log.d("inv",pos.toString())
-        /*when(pos){
-            0 -> adapter.name(true)
-            1 -> adapter.name(false)
-        }*/
+        Log.d("inv", pos.toString())
+        when (pos) {
+            0 -> adapter.sortByRarity(true)
+            1 -> adapter.sortByRarity(false)
+            2 -> adapter.sortByName(false)
+            3 -> adapter.sortByName(true)
+        }
     }
 
     override fun onNothingSelected(parent: AdapterView<*>) {}

@@ -47,7 +47,7 @@ class DetailFriendlistFragment : Fragment(),FriendAdapter.OnFriendSelectedListen
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                adapter.search(s.toString())
+                adapter.textSearch(s.toString())
             }
         })
 
@@ -86,8 +86,8 @@ class DetailFriendlistFragment : Fragment(),FriendAdapter.OnFriendSelectedListen
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
         when(pos){
-            0 -> adapter.name(true)
-            1 -> adapter.name(false)
+            0 -> adapter.sortByName(false)
+            1 -> adapter.sortByName(true)
         }
     }
 

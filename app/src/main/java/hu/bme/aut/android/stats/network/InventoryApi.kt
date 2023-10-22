@@ -10,7 +10,7 @@ import retrofit2.http.Query
 import java.util.*
 
 interface InventoryApi {
-    @GET("/profiles/{steamID}/inventory/json/730/2")
+    @GET("/inventory/{steamID}/730/2")
     fun getInventory(
             @Path("steamID") steamID: Long?
     ): Call<InventoryData?>?

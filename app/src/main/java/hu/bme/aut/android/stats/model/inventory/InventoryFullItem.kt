@@ -1,7 +1,7 @@
 package hu.bme.aut.android.stats.model.inventory
 
 class InventoryFullItem {
-    var id: String? = null
-    var amount: String? = null
-    var decs: DescriptionItem? = null
+    var assetid: String? = null
+    var amount: Int? = null
+    var desc: DescriptionItem? = null
 }

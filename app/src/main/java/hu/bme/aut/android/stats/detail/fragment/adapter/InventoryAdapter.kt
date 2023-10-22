@@ -11,13 +11,11 @@ import hu.bme.aut.android.stats.databinding.ItemInventoryBinding
 import hu.bme.aut.android.stats.model.inventory.DescriptionItem
 import hu.bme.aut.android.stats.model.inventory.InventoryData
 import hu.bme.aut.android.stats.model.inventory.InventoryFullItem
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlin.coroutines.CoroutineContext
 
 class InventoryAdapter(private val listener: OnItemSelectedListener) : RecyclerView.Adapter<InventoryAdapter.InventoryViewHolder>(){
 
     private var invenotry: MutableList<InventoryFullItem?> = ArrayList()
+    private var invenotryAll: MutableList<InventoryFullItem?> = ArrayList()
     private val imgURL = "https://steamcommunity-a.akamaihd.net/economy/image/"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = InventoryViewHolder(
@@ -31,8 +29,8 @@ class InventoryAdapter(private val listener: OnItemSelectedListener) : RecyclerV
 
     override fun getItemCount(): Int = invenotry.size
 
-    fun addItems(ID: InventoryData) {
-        setupInventory(ID)
+    fun addItems(data: InventoryData) {
+        setupInventory(data)
     }
 
     inner class InventoryViewHolder(val binding: ItemInventoryBinding): RecyclerView.ViewHolder(binding.root) {
@@ -46,15 +44,15 @@ class InventoryAdapter(private val listener: OnItemSelectedListener) : RecyclerV
 
         fun bind(newItem: InventoryFullItem?) {
             item = newItem!!
-            binding.tvItemName.text = item?.decs?.market_name
-            binding.tvItemAmount.text = binding.root.context.resources.getString(R.string.amountx,item?.amount)
-            item?.decs?.tags?.forEach {
+            binding.tvItemName.text = item?.desc?.market_name
+            binding.tvItemAmount.text = binding.root.context.resources.getString(R.string.amountx,item?.amount.toString())
+            item?.desc?.tags?.forEach {
                 if (!it.color.isNullOrEmpty()){
                     binding.llBorder.setBackgroundColor(Color.parseColor("#${it.color}"))
                 }
             }
             Glide.with(binding.root)
-                    .load("${imgURL}${item?.decs?.icon_url}")
+                    .load("${imgURL}${item?.desc?.icon_url}")
                     .transition(DrawableTransitionOptions().crossFade())
                     .into(binding.ivItemImg)
         }
@@ -64,24 +62,25 @@ class InventoryAdapter(private val listener: OnItemSelectedListener) : RecyclerV
         fun onItemSelected(item: InventoryFullItem)
     }
 
-    private fun setupInventory(inventoryData: InventoryData){
-        val inv = inventoryData
+    private fun setupInventory(inventoryData: InventoryData) {
+        val descriptionMap: Map<String, DescriptionItem> = createDescriptionMap(inventoryData.descriptions)
+
         val itemList: MutableList<InventoryFullItem?> = ArrayList()
         var inIt = false
 
-        for(entry in inv.rgInventory!!) {
-            val decs = "${entry.value.classid}_${entry.value.instanceid}"
+        for(asset in inventoryData.assets!!) {
+            val descKey = "${asset.classid}_${asset.instanceid}"
             val item = InventoryFullItem()
-            item.id = entry.value.id
-            item.amount = entry.value.amount
-            item.decs = inv.rgDescriptions?.get(decs)
+            item.assetid = asset.assetid
+            item.amount = 1
+            item.desc = descriptionMap[descKey]
             if(itemList.size == 0){
                 itemList.add(item)
             }else{
                 for (it in itemList){
-                    if(it?.decs?.market_name.equals(item.decs?.market_name)){
-                        if (it?.decs?.type!!.contains("Container") || it.decs?.type!!.contains("Graffiti") || it.decs?.type!!.contains("Sticker")){
-                            it.amount = it.amount?.toInt()?.plus(1).toString()
+                    if(it?.desc?.market_name.equals(item.desc?.market_name)){
+                        if (it?.desc?.type!!.contains("Container") || it.desc?.type!!.contains("Graffiti") || it.desc?.type!!.contains("Sticker")){
+                            it.amount = it.amount?.plus(1)
                             inIt = false
                             break
                         }
@@ -94,37 +93,63 @@ class InventoryAdapter(private val listener: OnItemSelectedListener) : RecyclerV
                 }
             }
         }
-        invenotry = sortInventory(itemList)
-        notifyDataSetChanged()
+        invenotryAll = itemList
+        invenotry = invenotryAll
+        sortByRarity(true)
     }
 
-    private fun sortInventory(itemList: MutableList<InventoryFullItem?>): MutableList<InventoryFullItem?> {
+    private fun createDescriptionMap(descriptionsList: List<DescriptionItem>?): MutableMap<String, DescriptionItem> {
+        val map: MutableMap<String, DescriptionItem> = mutableMapOf()
 
-        for (i in 0 until itemList.size-1){
-            var min:Int = i
-            for (j in i+1 until itemList.size){
-                var color = ""
-                var colorMin = ""
-                itemList[j]?.decs?.tags?.forEach {
-                    if (!it.color.isNullOrEmpty()){
-                        color = it.color!!
-                    }
-                }
-                itemList[min]?.decs?.tags?.forEach {
-                    if (!it.color.isNullOrEmpty()){
-                        colorMin = it.color!!
-                    }
-                }
-                if (colorToInt(color) > colorToInt(colorMin)){
-                    min = j
+        descriptionsList?.forEach {
+            map["${it.classid}_${it.instanceid}"] = it
+        }
+
+        return map
+    }
+
+    fun sortByRarity(desc: Boolean) {
+
+        val comparator = Comparator { g1: InventoryFullItem, g2: InventoryFullItem ->
+            val g1Color = getRarityColorFromInventoryFullItem(g1)
+            val g2Color = getRarityColorFromInventoryFullItem(g2)
+
+            return@Comparator (colorToInt(g2Color) - colorToInt(g1Color)) * if (desc) 1 else -1
+        }
+
+        invenotry = invenotry.sortedWith(comparator).toMutableList()
+        invenotryAll = invenotryAll.sortedWith(comparator).toMutableList()
+
+        notifyItemRangeChanged(0, invenotry.size)
+    }
+
+    private fun getRarityColorFromInventoryFullItem(item: InventoryFullItem): String
+    {
+        var color = ""
+        run getColorBlock@{
+            item.desc?.tags?.forEach {
+                if (it.category.equals("Rarity")) {
+                    color = it.color!!
+                    return@getColorBlock
                 }
             }
-            if(min != i){
-                itemList[i] = itemList[min].also { itemList[min] = itemList[i] }
+        }
+        return color
+    }
+
+    fun sortByName(desc: Boolean){
+
+        val comparator = Comparator { g1: InventoryFullItem, g2: InventoryFullItem ->
+            if (desc) {
+                return@Comparator g2.desc?.market_name?.compareTo(g1.desc?.market_name!!,ignoreCase = true)!!
+            }else{
+                return@Comparator g1.desc?.market_name?.compareTo(g2.desc?.market_name!!,ignoreCase = true)!!
             }
         }
 
-        return itemList
+        invenotry = invenotry.sortedWith(comparator).toMutableList()
+        invenotryAll = invenotryAll.sortedWith(comparator).toMutableList()
+        notifyItemRangeChanged(0, invenotry.size)
     }
 
     private fun colorToInt(color:String): Int{
@@ -138,5 +163,20 @@ class InventoryAdapter(private val listener: OnItemSelectedListener) : RecyclerV
             "e4ae39" -> return 7
         }
         return 0
+    }
+
+    fun search(searchText: String){
+        if (searchText.isEmpty()){
+            invenotry.clear()
+            invenotry.addAll(invenotryAll)
+        } else {
+            invenotry.clear()
+            invenotryAll.forEach {
+                if (it?.desc?.market_name!!.contains(searchText,ignoreCase = true)){
+                    invenotry.add(it)
+                }
+            }
+        }
+        notifyDataSetChanged()
     }
 }

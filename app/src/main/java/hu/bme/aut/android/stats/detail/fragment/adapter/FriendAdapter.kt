@@ -7,17 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import hu.bme.aut.android.stats.databinding.ItemFriendBinding
-import hu.bme.aut.android.stats.databinding.ItemPlayerBinding
-import hu.bme.aut.android.stats.menu.adapter.MenuAdapter
-import hu.bme.aut.android.stats.model.games.GameItem
 import hu.bme.aut.android.stats.model.profile.Player
 import hu.bme.aut.android.stats.model.profile.ProfileData
-import hu.bme.aut.android.stats.model.url.UrlData
 import hu.bme.aut.android.stats.network.NetworkManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.Exception
 
 class FriendAdapter (private val listener: OnFriendSelectedListener) : RecyclerView.Adapter<FriendAdapter.FriendViewHolder>() {
 
@@ -72,7 +67,7 @@ class FriendAdapter (private val listener: OnFriendSelectedListener) : RecyclerV
                 if (response.isSuccessful) {
                     friendsAll = response.body()?.response?.players!!.toMutableList()
                     friends = friendsAll
-                    name(true)
+                    sortByName(false)
                 } else {
                     Log.d(TAG, "Error: " + response.message())
                 }
@@ -85,38 +80,32 @@ class FriendAdapter (private val listener: OnFriendSelectedListener) : RecyclerV
         })
     }
 
-    fun name(desc: Boolean){
+    fun sortByName(desc: Boolean){
         val comparator = Comparator { g1: Player, g2: Player ->
             if (desc) {
-                return@Comparator g1.personaname?.compareTo(g2.personaname!!,ignoreCase = true)!!
-            }
-            else{
                 return@Comparator g2.personaname?.compareTo(g1.personaname!!,ignoreCase = true)!!
+            }else{
+                return@Comparator g1.personaname?.compareTo(g2.personaname!!,ignoreCase = true)!!
             }
         }
         friends = friends.sortedWith(comparator).toMutableList()
         friendsAll = friendsAll.sortedWith(comparator).toMutableList()
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, friends.size)
     }
 
-    fun search(searchText: String){
-        Log.d("friendadapter","text: " + searchText)
+    fun textSearch(searchText: String){
         if (searchText.isEmpty()){
             friends.clear()
             friends.addAll(friendsAll)
-            Log.d("adapter","friends: " + friends.size + " friendsAll: " + friendsAll.size)
-            notifyDataSetChanged()
         } else {
             friends.clear()
-            Log.d("adapter","after clear friends: " + friends.size + " friendsAll: " + friendsAll.size)
             friendsAll.forEach {
                 if (it?.personaname!!.contains(searchText,ignoreCase = true)){
                     friends.add(it)
                 }
             }
-            Log.d("adapter","after add friends: " + friends.size + " friendsAll: " + friendsAll.size)
-            notifyDataSetChanged()
         }
+        notifyDataSetChanged()
     }
 
 }
