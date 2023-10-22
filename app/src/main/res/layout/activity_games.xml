@@ -7,15 +7,15 @@
     android:layout_height="match_parent"
     android:paddingVertical="10dp"
     android:orientation="vertical"
-    android:background="@color/darkgrey">
+    android:background="@color/darkGrey">
 
     <EditText
         android:id="@+id/etSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:textColorHint="@color/lightgray"
-        android:backgroundTint="@color/lightgray"
+        android:textColorHint="@color/lightGray"
+        android:backgroundTint="@color/lightGray"
         android:textColor="@color/white"
         android:autofillHints="search"
         android:textSize="20sp"
@@ -38,7 +38,7 @@
             android:id="@+id/SSort"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:popupBackground="@color/middlegray"
+            android:popupBackground="@color/middleGray"
             android:layout_gravity="bottom"
             android:gravity="center"/>
     </LinearLayout>
@@ -49,6 +49,6 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:listitem="@layout/item_game"
-        android:background="@color/darkgrey"/>
+        android:background="@color/darkGrey"/>
 
 </LinearLayout>

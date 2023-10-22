@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/darkgrey"
+    android:background="@color/darkGrey"
     android:padding="10dp">
 
     <LinearLayout
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:text="@string/id"
             android:textSize="20sp"
-            android:background="@color/middlegray"
+            android:background="@color/middleGray"
             android:padding="5dp"/>
         <TextView
             android:id="@+id/tvPlayerID"
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:text="@string/link"
             android:textSize="20sp"
-            android:background="@color/middlegray"
+            android:background="@color/middleGray"
             android:padding="5dp"/>
         <TextView
             android:id="@+id/tvPlayerProfileLink"
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:text="@string/level"
             android:textSize="20sp"
-            android:background="@color/middlegray"
+            android:background="@color/middleGray"
             android:padding="5dp"/>
         <TextView
             android:id="@+id/tvPlayerProfileLevel"
@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:text="@string/visibility_state"
             android:textSize="20sp"
-            android:background="@color/middlegray"
+            android:background="@color/middleGray"
             android:padding="5dp"/>
         <TextView
             android:id="@+id/tvPlayerCommProfileState"
@@ -110,7 +110,7 @@
             android:layout_height="wrap_content"
             android:text="@string/profile_state"
             android:textSize="20sp"
-            android:background="@color/middlegray"
+            android:background="@color/middleGray"
             android:padding="5dp"/>
         <TextView
             android:id="@+id/tvPlayerState"
@@ -136,7 +136,7 @@
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/item_game"
-            android:background="@color/darkgrey"
+            android:background="@color/darkGrey"
             android:layout_marginBottom="15dp"/>
 
         <Button
@@ -154,7 +154,7 @@
             android:layout_height="wrap_content"
             android:text="@string/profile_comm_ban"
             android:textSize="20sp"
-            android:background="@color/middlegray"
+            android:background="@color/middleGray"
             android:padding="5dp"/>
         <TextView
             android:id="@+id/tvPlayerCommBan"
@@ -170,7 +170,7 @@
             android:layout_height="wrap_content"
             android:text="@string/profile_vac_ban"
             android:textSize="20sp"
-            android:background="@color/middlegray"
+            android:background="@color/middleGray"
             android:padding="5dp"/>
         <TextView
             android:id="@+id/tvPlayerVacBan"
@@ -186,7 +186,7 @@
             android:layout_height="wrap_content"
             android:text="@string/profile_num_vac_ban"
             android:textSize="20sp"
-            android:background="@color/middlegray"
+            android:background="@color/middleGray"
             android:padding="5dp"/>
         <TextView
             android:id="@+id/tvPlayerNumVacBan"
@@ -202,7 +202,7 @@
             android:layout_height="wrap_content"
             android:text="@string/profile_vac_ban_days"
             android:textSize="20sp"
-            android:background="@color/middlegray"
+            android:background="@color/middleGray"
             android:padding="5dp"/>
         <TextView
             android:id="@+id/tvPlayerVacBanDays"
@@ -218,7 +218,7 @@
             android:layout_height="wrap_content"
             android:text="@string/profile_num_ban"
             android:textSize="20sp"
-            android:background="@color/middlegray"
+            android:background="@color/middleGray"
             android:padding="5dp"/>
         <TextView
             android:id="@+id/tvPlayerNumBan"
@@ -234,7 +234,7 @@
             android:layout_height="wrap_content"
             android:text="@string/profile_trade_ban"
             android:textSize="20sp"
-            android:background="@color/middlegray"
+            android:background="@color/middleGray"
             android:padding="5dp"/>
         <TextView
             android:id="@+id/tvPlayerTradeBan"

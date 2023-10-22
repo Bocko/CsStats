@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="15dp"
-    android:background="@color/middlegray"
+    android:background="@color/middleGray"
     android:gravity="center_vertical"
     android:weightSum="3">
 
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:textColorHint="@color/lightgray"
+            android:textColorHint="@color/lightGray"
             android:backgroundTint="@color/white"
             android:textColor="@color/white"
             android:autofillHints="steamid"

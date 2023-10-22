@@ -10,8 +10,8 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/darkgrey"
-        app:tabTextColor="@color/lightgray"
+        android:backgroundTint="@color/darkGrey"
+        app:tabTextColor="@color/lightGray"
         app:tabSelectedTextColor="@color/white"
         app:tabIndicatorColor="@color/black"
         app:tabMode="scrollable"/>
@@ -21,6 +21,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/darkgrey"/>
+        android:background="@color/darkGrey"/>
 
 </LinearLayout>

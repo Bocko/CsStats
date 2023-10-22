@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/darkgrey">
+    android:background="@color/darkGrey">
 
     <TextView
         android:id="@+id/tvInfo"
@@ -19,7 +19,7 @@
         android:id="@+id/svCharts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/darkgrey"
+        android:background="@color/darkGrey"
         android:padding="10dp">
 
         <LinearLayout
@@ -35,7 +35,7 @@
                 android:textSize="30sp"
                 android:padding="5dp"
                 android:layout_marginBottom="25dp"
-                android:background="@color/middlegray"/>
+                android:background="@color/middleGray"/>
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/pieKD"
@@ -51,7 +51,7 @@
                 android:padding="5dp"
                 android:layout_marginBottom="25dp"
                 android:layout_marginTop="30dp"
-                android:background="@color/middlegray"/>
+                android:background="@color/middleGray"/>
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/pieAccu"
@@ -67,7 +67,7 @@
                 android:padding="5dp"
                 android:layout_marginBottom="25dp"
                 android:layout_marginTop="30dp"
-                android:background="@color/middlegray"/>
+                android:background="@color/middleGray"/>
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/pieHSAccu"
