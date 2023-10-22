@@ -1,6 +1,6 @@
 # csStats
 
-csStats is an Android app that allows you add steam users, check their stats and inventory in cs(go/2)
+csStats is an Android app that allows you add steam users, check their stats and inventory in cs(go/2).
 It was made as the second homework for my Client Apps class in my 4th semester at [BME](https://www.bme.hu/?language=en).
 Although this was a homework, I did some work on it after submittion
 
